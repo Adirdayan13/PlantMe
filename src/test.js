@@ -8,7 +8,7 @@ export default class Test extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
-    // console.log("this.props from Profile : ", this.props);
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
   handleChange(e) {
@@ -25,7 +25,7 @@ export default class Test extends React.Component {
     console.log("this.state from grabfile: ", this.state);
   }
 
-  clickHandler() {
+  clickHandler(e) {
     // let image = this.state.picture;
     // console.log("file: ", this.state.file);
     // console.log("image: ", image);
@@ -48,6 +48,7 @@ export default class Test extends React.Component {
         var parsedResults = JSON.parse(results.data);
         console.log("parsedResults: ", parsedResults.result.tags);
         this.setState({ parsedResults: parsedResults.result.tags });
+        this.fileInput.value = "";
       })
       .catch(err => {
         console.log("err: ", err);
@@ -62,13 +63,14 @@ export default class Test extends React.Component {
         <br />
         <form>
           <input
+            ref={ref => (this.fileInput = ref)}
             type="file"
             name="file"
             id="file"
             onChange={e => this.grabFile(e)}
           />
         </form>
-        <button onClick={this.clickHandler.bind(this)}>Click Me</button>
+        <button onClick={e => this.clickHandler(e)}>Click Me</button>
         {this.state.done && <div>done</div>}
         {this.state.parsedResults && (
           <div>

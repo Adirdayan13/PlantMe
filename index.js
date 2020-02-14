@@ -21,8 +21,6 @@ const fs = require("fs");
 const request = require("request");
 const apiKey = secret.apiKey;
 const apiSecret = secret.apiSecret;
-// console.log("apiKey: ", apiKey);
-// console.log("apiSecret: ", apiSecret);
 let imageUrl;
 // let imageUrl =
 //   "https://upload.wikimedia.org/wikipedia/commons/9/99/Field_of_Mentha_x_piperita_02.jpg";
@@ -115,8 +113,8 @@ app.post("/click", (req, res) => {
 
 app.post("/upload", uploader.single("file"), async (req, res) => {
   console.log("**************************  click POST");
-  console.log("req.file: ", req.file);
-  console.log("path: ", req.file.path);
+  // console.log("req.file: ", req.file);
+  // console.log("path: ", req.file.path);
   var filePathLocal = req.file.path;
   console.log("filePathLocal: ", filePathLocal);
   (filePath = filePathLocal),
@@ -132,14 +130,18 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
           // console.log("response: ", response);
           // console.log("Status:", response.statusCode);
           // console.log("Headers:", JSON.stringify(response.headers));
-          console.log("Response:", body);
+          console.log(
+            "Response from imagga:",
+            JSON.parse(body).result.tags[0].tag.en
+          );
+          const firstResultImagga = JSON.parse(body).result.tags[0].tag.en;
           res.json(body);
         }
       )
       .auth(apiKey, apiSecret, true);
     //
     // await https.get(
-    //   "https://trefle.io/api/plants?q=mint&token=UlE1S2s3SWtCZ01qelVrK0xOU0dpdz09",
+    //   `https://trefle.io/api/plants?q=mint&token=UlE1S2s3SWtCZ01qelVrK0xOU0dpdz09`,
     //   res => {
     //     var body = "";
     //     res.on("data", function(chunk) {
