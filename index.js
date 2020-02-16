@@ -8,6 +8,7 @@ const cryptoRandomString = require("crypto-random-string");
 const ses = require("./ses");
 const path = require("path");
 const https = require("https");
+const bcrypt = require("./bcrypt");
 ///upload
 const multer = require("multer");
 const s3 = require("./s3");
@@ -21,6 +22,7 @@ const fs = require("fs");
 const request = require("request");
 const apiKey = secret.apiKey;
 const apiSecret = secret.apiSecret;
+const trfleToken = secret.trefleToken;
 let imageUrl;
 // let imageUrl =
 //   "https://upload.wikimedia.org/wikipedia/commons/9/99/Field_of_Mentha_x_piperita_02.jpg";
@@ -82,7 +84,7 @@ const uploader = multer({
   }
 });
 
-///// ROUTES
+///// ROUTES /////
 
 app.get("/welcome", function(req, res) {
   console.log("*************************** GET WELCOME");
@@ -93,37 +95,89 @@ app.get("/welcome", function(req, res) {
   }
 });
 
-app.post("/click", (req, res) => {
-  console.log("req.body: ", req.body);
-  console.log("clicked");
-  request
-    .get(
-      "https://api.imagga.com/v2/tags?image_url=" +
-        encodeURIComponent(imageUrl),
-      function(error, response, body) {
-        console.log("Status:", response.statusCode);
-        console.log("Headers:", JSON.stringify(response.headers));
-        console.log("Response:", JSON.stringify(body));
-        console.log("body: ", body);
-        res.json(body);
-      }
-    )
-    .auth(apiKey, apiSecret, true);
+app.post("/register", (req, res) => {
+  console.log("*************************** regsiter POST !");
+  let first = req.body.first;
+  let last = req.body.last;
+  let email = req.body.email;
+  let password = req.body.password;
+
+  if (req.body == {}) {
+    res.json({ success: false });
+  } else if (
+    first == "" ||
+    last == "" ||
+    email == "" ||
+    password == "" ||
+    first.startsWith(" ") ||
+    last.startsWith(" ") ||
+    email.startsWith(" ") ||
+    password.startsWith(" ")
+  ) {
+    res.json({ success: false });
+  } else {
+    bcrypt
+      .hash(password)
+      .then(hashedPass => {
+        db.addUser(first, last, email, hashedPass, null)
+          .then(results => {
+            req.session.email = email;
+            req.session.userId = results.rows[0].id;
+            res.json({ success: true });
+          })
+          .catch(err => {
+            console.log("error from addUser POST register: ", err);
+            res.json({ success: false });
+          });
+      })
+      .catch(err => {
+        console.log("error from hashedPass: ", err);
+        res.json({ success: false });
+      });
+  }
+});
+
+app.post("/login", function(req, res) {
+  console.log("*************************** POST login");
+  const email = req.body.email;
+  const password = req.body.password;
+  db.getUser(email)
+    .then(results => {
+      bcrypt
+        .compare(password, results.rows[0].password)
+        .then(result => {
+          if (result) {
+            req.session.userId = results.rows[0].id;
+            req.session.email = email;
+            res.json({ success: true });
+          } else {
+            res.json({ success: false });
+          }
+        })
+        .catch(err => {
+          console.log("error from bcrypt compare POST login: ", err);
+          res.json({ success: false });
+        });
+    })
+    .catch(err => {
+      console.log("error from getUser POST login: ", err);
+      res.json({ success: false });
+    });
 });
 
 app.post("/upload", uploader.single("file"), async (req, res) => {
-  console.log("**************************  click POST");
+  console.log("**************************  upload POST");
   // console.log("req.file: ", req.file);
   // console.log("path: ", req.file.path);
+  // console.log("filePathLocal: ", filePathLocal);
   var filePathLocal = req.file.path;
-  console.log("filePathLocal: ", filePathLocal);
   (filePath = filePathLocal),
     (formData = {
       image: fs.createReadStream(filePath)
     });
 
-  try {
-    await request
+  const p1 = new Promise((resolve, reject) => {
+    request
       .post(
         { url: "https://api.imagga.com/v2/tags", formData: formData },
         function(error, response, body) {
@@ -131,32 +185,125 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
           // console.log("Status:", response.statusCode);
           // console.log("Headers:", JSON.stringify(response.headers));
           console.log(
-            "Response from imagga:",
-            JSON.parse(body).result.tags[0].tag.en
+            "First response from imagga:",
+            JSON.parse(body).result.tags
           );
-          const firstResultImagga = JSON.parse(body).result.tags[0].tag.en;
-          res.json(body);
+          // firstResultImagga = JSON.parse(body).result.tags[0].tag.en;
+          // res.json(body);
+          resolve(JSON.parse(body).result.tags[0].tag.en);
         }
       )
       .auth(apiKey, apiSecret, true);
-    //
-    // await https.get(
-    //   `https://trefle.io/api/plants?q=mint&token=UlE1S2s3SWtCZ01qelVrK0xOU0dpdz09`,
-    //   res => {
-    //     var body = "";
-    //     res.on("data", function(chunk) {
-    //       body += chunk;
-    //     });
-    //     res.on("end", function() {
-    //       console.log("body from end: ", body);
-    //     });
-    //     console.log("body: ", body);
-    //   }
-    // );
-    // console.log("dataFromTrefle: ", dataFromTrefle);
-  } catch (e) {
-    console.log("error from post: ", e);
+  });
+
+  function getTrefle(imagga) {
+    return new Promise((resolve, reject) => {
+      let body = "";
+      https.get(
+        `https://trefle.io/api/plants?q=${imagga}&token=${trfleToken}`,
+        res => {
+          res.on("data", function(chunk) {
+            body += chunk;
+          });
+          res.on("end", function() {
+            // console.log("body from getTrefle: ", body);
+            // console.log("parsed body from getTrefle: ", JSON.parse(body));
+            resolve(JSON.parse(body));
+          });
+        }
+      );
+    });
   }
+
+  function getImage(url) {
+    return new Promise((resolve, reject) => {
+      let host = url.slice(8, 17);
+      let path = url.replace("https://trefle.io", "");
+      // console.log("host: ", host);
+      // console.log("path: ", path);
+      const options = {
+        hostname: host,
+        path: path,
+        headers: {
+          Authorization: `Bearer ${trfleToken}`
+        }
+      };
+      let body = "";
+      let parsedResults = "";
+      https
+        .get(options, res => {
+          res.on("data", function(chunk) {
+            body += chunk;
+            // console.log("body: ", body);
+          });
+          res.on("end", function() {
+            // console.log(
+            //   "JSON.parse(body).images[0]: ",
+            //   JSON.parse(body).images[0]
+            // );
+            if (JSON.parse(body).images[0] != undefined) {
+              // console.log(
+              //   "JSON.parse(body).images[0].url: ",
+              //   JSON.parse(body).images[0].url
+              // );
+              // console.log("^^^^^^^ YES ^^^^^^^");
+              parsedResults += JSON.parse(body).images[0].url;
+              // console.log("parsedResults inside if: ", parsedResults);
+            }
+            // console.log("parsedResults outside if: ", parsedResults);
+            resolve(parsedResults);
+          });
+
+          if (res.statusCode == 200) {
+            // console.log("body from 200: ", body);
+            // console.log("parsedResults statusCode 200:", parsedResults);
+            // resolve(parsedResults);
+          } else {
+            console.log("error: ");
+            reject(res.statusMessage);
+          }
+        })
+        .on("error", function(err) {
+          console.log("err: ", err);
+        });
+    });
+  }
+
+  async function fetch() {
+    const imagga = await p1;
+    const plants = await getTrefle(imagga);
+    // console.log("JSON.parse(plants)", JSON.parse(plants));
+    // console.log("plants: ", plants);
+
+    const imageUrls = plants.map(plant => plant.link);
+    // console.log("imageUrls: ", imageUrls);
+    const urls = imageUrls.reduce(function(array, url) {
+      url = url.replace("http", "https");
+      // console.log("url: ", url);
+      // console.log("array: ", array);
+      array.push(getImage(url));
+      // console.log("array: ", array);
+      return array;
+    }, []);
+    // console.log("urls: ", urls);
+    // console.log("plants: ", plants);
+    const promises = await Promise.all(urls);
+    // console.log("promises: ", promises);
+
+    let imagesLinks = promises.forEach((item, i) => {
+      // console.log("plants[i]: ", plants[i]);
+      if (item != "") {
+        plants[i].imageUrl = item;
+        // console.log("item: ", item);
+      }
+      // console.log("item: ", item);
+      // console.log("plants[i]: ", plants[i]);
+    });
+    console.log("plants: ", plants);
+    res.json(plants);
+  }
+
+  return fetch();
 });
 
 app.get("*", function(req, res) {

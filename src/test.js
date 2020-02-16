@@ -28,7 +28,7 @@ export default class Test extends React.Component {
   clickHandler(e) {
     // let image = this.state.picture;
     // console.log("file: ", this.state.file);
-    // console.log("image: ", image);
+    //
     // axios.post("/click").then(results => {
     //   // console.log("Restuls: ", results);
     //   this.setState({ done: true });
@@ -44,10 +44,10 @@ export default class Test extends React.Component {
     axios
       .post("/upload", formData)
       .then(results => {
-        console.log("results from post click: ", results);
-        var parsedResults = JSON.parse(results.data);
-        console.log("parsedResults: ", parsedResults.result.tags);
-        this.setState({ parsedResults: parsedResults.result.tags });
+        // console.log("results from post upload: ", results);
+        // var parsedResults = JSON.parse(results.data);
+        // console.log("results.data: ", results.data);
+        this.setState({ parsedResults: results.data });
         this.fileInput.value = "";
       })
       .catch(err => {
@@ -75,15 +75,15 @@ export default class Test extends React.Component {
         {this.state.parsedResults && (
           <div>
             {" "}
+            <p>results</p>
             {this.state.parsedResults.map((result, key) => (
               <div key={key}>
-                {result.confidence && (
-                  <ul>
-                    <li>
-                      {result.confidence} {result.tag.en}
-                    </li>
-                  </ul>
+                {result.imageUrl && (
+                  <img style={{ width: "400px" }} src={result.imageUrl} />
                 )}
+
+                {result.slut}
+                {result.common_name}
               </div>
             ))}
           </div>

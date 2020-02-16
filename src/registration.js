@@ -13,8 +13,34 @@ export default class Registration extends React.Component {
     });
     console.log("change !");
   }
-  submit() {
+  submit(e) {
     console.log("button clicked");
+    e.preventDefault();
+    axios
+      .post("/register", {
+        first: this.state.first,
+        last: this.state.last,
+        email: this.state.email,
+        password: this.state.password
+      })
+      .then(({ data }) => {
+        console.log("data: ", data);
+        if (data.success) {
+          console.log("post register worked");
+          location.replace("/");
+        } else {
+          console.log("post register didnt worked");
+          this.setState({
+            error: true
+          });
+        }
+      })
+      .catch(err => {
+        console.log("error from POST register: ", err);
+        this.setState({
+          error: true
+        });
+      });
   }
 
   render() {
@@ -57,7 +83,7 @@ export default class Registration extends React.Component {
             type="password"
             onChange={e => this.handleChange(e)}
           />
-          <button className="submit-btn-register" onClick={() => this.submit()}>
+          <button className="submit-btn-register" onClick={e => this.submit(e)}>
             Register
           </button>
           <br></br>
