@@ -23,6 +23,10 @@ const request = require("request");
 const apiKey = secret.apiKey;
 const apiSecret = secret.apiSecret;
 const trfleToken = secret.trefleToken;
+const googlePhotosCliendId = secret.googlePhotosCliendId;
+const googlePhotosSecret = secret.googlePhotosSecret;
+const bingKey = secret.bingKey;
+
 const vision = require("@google-cloud/vision");
 let imageUrl;
 // let imageUrl =
@@ -199,6 +203,10 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
   if (!req.session.userId) {
     res.redirect("/welome");
   }
+
+  // console.log("req.file: ", req.file);
+  // console.log("path: ", req.file.path);
+  // console.log("filePathLocal: ", filePathLocal);
   var filePathLocal = req.file.path;
   (filePath = filePathLocal),
     (formData = {
@@ -215,7 +223,12 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
       allResults.push(results);
       // const getTrefle = await getTrefle(firstResultsFromGoogle);
       // console.log("get trefle results from googleAPI: ", getTrefle);
-      resolve(firstResultsFromGoogle);
+      if (!firstResultsFromGoogle == "") {
+        resolve(firstResultsFromGoogle);
+      } else {
+        let secondResultsFromGoogle = results[1].description;
+        resolve(secondResultsFromGoogle);
+      }
     });
   });
 
@@ -331,6 +344,45 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
   }
 
   return fetch();
+});
+
+app.post("/result/:bing", (req, res) => {
+  let bingSearchDynamic = req.params.bing + " plant";
+  console.log("bingSearchDynamic: ", bingSearchDynamic);
+
+  // BING SEARCH //
+  let subscriptionKey = `${bingKey}`;
+  let host = "api.cognitive.microsoft.com";
+  let path =
+    "/bing/v7.0/images/search?q=" + encodeURIComponent(bingSearchDynamic);
+  // let term = "tropical ocean";
+
+  // console.log("path: ", path);
+  // BING SEARCH //
+  let request_params = {
+    method: "GET",
+    hostname: host,
+    path: path,
+    headers: {
+      "Ocp-Apim-Subscription-Key": subscriptionKey
+    }
+  };
+
+  let response_handler = function(response) {
+    let body = "";
+    response.on("data", function(d) {
+      body += d;
+    });
+    response.on("end", function() {
+      // console.log(`Image result count: ${body.value.length}`);
+      // console.log(`First image thumbnail url: ${body.thumbnailUrl}`);
+      // console.log(`First image web search url: ${body.webSearchUrl}`);
+      console.log("parsed body: ", JSON.parse(body).value[0]);
+      res.json(JSON.parse(body).value[0].contentUrl);
+    });
+  };
+  let request = https.request(request_params, response_handler);
+  request.end();
 });
 
 app.get("*", function(req, res) {

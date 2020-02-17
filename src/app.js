@@ -3,6 +3,7 @@ import axios from "./axios";
 import { useDispatch, useSelector } from "react-redux";
 import Test from "./test";
 import Test2 from "./test2";
+import Showmore from "./showmore";
 import Webcam from "react-webcam";
 const WebcamComponent = () => <Webcam />;
 import { Link } from "react-router-dom";

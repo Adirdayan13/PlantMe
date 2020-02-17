@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "./axios";
+import Showmore from "./showmore";
 import { BrowserRouter, Route } from "react-router-dom";
 
 import { Link } from "react-router-dom";
@@ -7,7 +8,7 @@ import { Link } from "react-router-dom";
 export default class Test extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { show: false };
     this.clickHandler = this.clickHandler.bind(this);
   }
 
@@ -31,12 +32,30 @@ export default class Test extends React.Component {
     axios
       .post("/upload", formData)
       .then(results => {
-        // console.log("results from post upload: ", results);
-        // var parsedResults = JSON.parse(results.data);
-        // console.log("trefle: ", results.data[1]);
-        // console.log("google: ", results.data[0]);
-        this.setState({ google: results.data[0] });
-        this.setState({ trefle: results.data[1] });
+        let googleResults = results.data[0];
+        let trefleResults = results.data[1];
+        this.setState({ google: googleResults });
+        this.setState({ trefle: trefleResults });
+        let bingResults = [];
+
+        // Make request to bing only if no results from trefle
+        if (trefleResults.length == 0) {
+          googleResults.slice(0, 3).forEach(result => {
+            console.log("result: ", result.description);
+            axios
+              .post("/result/" + result.description)
+              .then(results => {
+                bingResults.push(results.data);
+                this.setState({ bing: bingResults });
+                this.fileInput.value = "";
+              })
+              .catch(err => {
+                console.log("err: ", err);
+              });
+          });
+        }
+        // this.setState({ google: results.data[0] });
+        // this.setState({ trefle: results.data[1] });
         this.fileInput.value = "";
       })
       .catch(err => {
@@ -45,24 +64,6 @@ export default class Test extends React.Component {
   }
   showGoogleResults(e) {
     this.setState({ showGoogleResults: true });
-  }
-  resultHandler(e) {
-    console.log("e.taret.innerHTML: ", e.target.innerHTML);
-    let result = e.target.innerHTML;
-    axios
-      .post("/upload", result)
-      .then(results => {
-        // console.log("results from post upload: ", results);
-        // var parsedResults = JSON.parse(results.data);
-        // console.log("trefle: ", results.data[1]);
-        // console.log("google: ", results.data[0]);
-        this.setState({ google: results.data[0] });
-        this.setState({ trefle: results.data[1] });
-        this.fileInput.value = "";
-      })
-      .catch(err => {
-        console.log("err: ", err);
-      });
   }
 
   render() {
@@ -86,50 +87,60 @@ export default class Test extends React.Component {
         {this.state.trefle && (
           <div>
             {this.state.trefle.length == 0 && (
-              <p className="no-results">We have no results for you, sorry.</p>
-            )}
-            <br />
-            <p
-              className="did-you-mean"
-              onClick={e => this.showGoogleResults(e)}
-            >
-              Did you mean something else ?<br />
-              Click here
-            </p>
-            <br />
-            {this.state.showGoogleResults && (
               <div className="google-results">
-                {this.state.google.map((result, key) => {
+                <p className="no-results">
+                  We are not sure about your picture, this is the alternative we
+                  found.
+                </p>
+                {this.state.google.slice(0, 3).map((googleResult, key) => {
                   return (
-                    <p
-                      key={key}
-                      name={result.description}
-                      onClick={e => this.resultHandler(e)}
-                    >
-                      {result.description}
+                    <p key={key} name={googleResult.description}>
+                      {googleResult.description}
                     </p>
                   );
                 })}
+                {this.state.bing && (
+                  <div>
+                    {this.state.bing.map((result, key) => {
+                      return (
+                        <>
+                          <img style={{ width: "200px" }} src={result} />
+                        </>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             )}
+            <br />
+
             {this.state.trefle.map((result, key) => (
               <div className="result" key={key}>
                 {result.allResults && (
                   <>
                     <p>{result.common_name}</p>
+                    <br />
                     {result.allResults.images[0].url && (
                       <img
                         style={{ width: "400px" }}
                         src={result.allResults.images[0].url}
                       />
                     )}
-                    {!result.allResults.images[0].url && (
-                      <p>We didnt find any pictures, sorry.</p>
-                    )}
                   </>
                 )}
               </div>
             ))}
+            {this.state.trefle.length != 0 && (
+              <div>
+                <p
+                  style={{ textAlign: "center", fontSize: "20px" }}
+                  onClick={() => this.setState({ show: true })}
+                >
+                  Click here for more info
+                </p>
+                {this.state.show && <Showmore state={this.state} />}
+              </div>
+            )}
           </div>
         )}
       </div>
