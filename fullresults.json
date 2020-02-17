@@ -1,0 +1,588 @@
+{
+  "varieties": [
+    {
+      "year": null,
+      "type": "var",
+      "synonym": false,
+      "status": "Unknown",
+      "sources": [
+        {
+          "species_id": 101861,
+          "source_url": "https://plants.usda.gov",
+          "name": "USDA",
+          "last_update": "2019-01-11T09:40:31.268310"
+        }
+      ],
+      "slug": "acer-rubrum-var-trilobum",
+      "scientific_name": "Acer rubrum var. trilobum",
+      "main_species_id": 101852,
+      "link": "http://trefle.io/api/plants/101861",
+      "is_main_species": false,
+      "id": 101861,
+      "family_common_name": "Maple family",
+      "complete_data": true,
+      "common_name": "red maple",
+      "bibliography": null,
+      "author": null
+    },
+    {
+      "year": null,
+      "type": "var",
+      "synonym": false,
+      "status": "Unknown",
+      "sources": [
+        {
+          "species_id": 101858,
+          "source_url": "https://plants.usda.gov",
+          "name": "USDA",
+          "last_update": "2019-01-11T09:40:31.230152"
+        }
+      ],
+      "slug": "acer-rubrum-var-tomentosum",
+      "scientific_name": "Acer rubrum var. tomentosum",
+      "main_species_id": 101852,
+      "link": "http://trefle.io/api/plants/101858",
+      "is_main_species": false,
+      "id": 101858,
+      "family_common_name": "Maple family",
+      "complete_data": true,
+      "common_name": "red maple",
+      "bibliography": null,
+      "author": null
+    },
+    {
+      "year": null,
+      "type": "var",
+      "synonym": false,
+      "status": "Unknown",
+      "sources": [
+        {
+          "species_id": 101857,
+          "source_url": "https://plants.usda.gov",
+          "name": "USDA",
+          "last_update": "2019-01-11T09:40:31.217075"
+        }
+      ],
+      "slug": "acer-rubrum-var-rubrum",
+      "scientific_name": "Acer rubrum var. rubrum",
+      "main_species_id": 101852,
+      "link": "http://trefle.io/api/plants/101857",
+      "is_main_species": false,
+      "id": 101857,
+      "family_common_name": "Maple family",
+      "complete_data": true,
+      "common_name": "red maple",
+      "bibliography": null,
+      "author": null
+    },
+    {
+      "year": null,
+      "type": "var",
+      "synonym": false,
+      "status": "Accepted",
+      "sources": [
+        {
+          "species_id": 197972,
+          "source_url": "http://www.tropicos.org",
+          "name": "Tropicos",
+          "last_update": "2019-01-11T15:31:08.948592"
+        }
+      ],
+      "slug": "acer-rubrum-var-pycnanthum",
+      "scientific_name": "Acer rubrum var. pycnanthum",
+      "main_species_id": 101852,
+      "link": "http://trefle.io/api/plants/197972",
+      "is_main_species": false,
+      "id": 197972,
+      "family_common_name": "Maple family",
+      "complete_data": true,
+      "common_name": "red maple",
+      "bibliography": null,
+      "author": "Makino"
+    },
+    {
+      "year": null,
+      "type": "var",
+      "synonym": false,
+      "status": "Unknown",
+      "sources": [
+        {
+          "species_id": 101853,
+          "source_url": "https://plants.usda.gov",
+          "name": "USDA",
+          "last_update": "2019-01-11T09:40:31.167184"
+        }
+      ],
+      "slug": "acer-rubrum-var-drummondii",
+      "scientific_name": "Acer rubrum var. drummondii",
+      "main_species_id": 101852,
+      "link": "http://trefle.io/api/plants/101853",
+      "is_main_species": false,
+      "id": 101853,
+      "family_common_name": "Maple family",
+      "complete_data": true,
+      "common_name": "red maple",
+      "bibliography": null,
+      "author": null
+    },
+    {
+      "year": null,
+      "type": "var",
+      "synonym": false,
+      "status": "Unknown",
+      "sources": [
+        {
+          "species_id": 101863,
+          "source_url": "https://plants.usda.gov",
+          "name": "USDA",
+          "last_update": "2019-01-11T09:40:31.293577"
+        }
+      ],
+      "slug": "acer-rubrum-var-tridens",
+      "scientific_name": "Acer rubrum var. tridens",
+      "main_species_id": 101852,
+      "link": "http://trefle.io/api/plants/101863",
+      "is_main_species": false,
+      "id": 101863,
+      "family_common_name": "Maple family",
+      "complete_data": true,
+      "common_name": "red maple",
+      "bibliography": null,
+      "author": null
+    }
+  ],
+  "sub_species": [
+    {
+      "year": null,
+      "type": "ssp",
+      "synonym": false,
+      "status": "Accepted",
+      "sources": [
+        {
+          "species_id": 198191,
+          "source_url": "http://www.tropicos.org",
+          "name": "Tropicos",
+          "last_update": "2019-01-11T16:01:43.672464"
+        }
+      ],
+      "slug": "acer-rubrum-subsp-drummondii",
+      "scientific_name": "Acer rubrum subsp. drummondii",
+      "main_species_id": 101852,
+      "link": "http://trefle.io/api/plants/198191",
+      "is_main_species": false,
+      "id": 198191,
+      "family_common_name": "Maple family",
+      "complete_data": true,
+      "common_name": "red maple",
+      "bibliography": "Kalmia 1(7): 29. 1969. (Kalmia) ",
+      "author": "A.E. Murray"
+    },
+    {
+      "year": null,
+      "type": "ssp",
+      "synonym": false,
+      "status": "Unknown",
+      "sources": [
+        {
+          "species_id": 101855,
+          "source_url": "https://plants.usda.gov",
+          "name": "USDA",
+          "last_update": "2019-01-11T09:40:31.191176"
+        }
+      ],
+      "slug": "acer-rubrum-ssp-drummondii",
+      "scientific_name": "Acer rubrum ssp. drummondii",
+      "main_species_id": 101852,
+      "link": "http://trefle.io/api/plants/101855",
+      "is_main_species": false,
+      "id": 101855,
+      "family_common_name": "Maple family",
+      "complete_data": true,
+      "common_name": "red maple",
+      "bibliography": null,
+      "author": null
+    }
+  ],
+  "scientific_name": "Acer rubrum",
+  "order": {
+    "slug": "sapindales",
+    "name": "Sapindales",
+    "link": "http://trefle.io/api/division_orders/17",
+    "id": 17
+  },
+  "native_status": "L48(N)CAN(N)",
+  "main_species": {
+    "year": null,
+    "type": "species",
+    "synonym": false,
+    "status": "Unknown",
+    "specifications": {
+      "toxicity": "Slight",
+      "shape_and_orientation": "Rounded",
+      "regrowth_rate": null,
+      "nitrogen_fixation": "None",
+      "max_height_at_base_age": {
+        "ft": 35.0,
+        "cm": 1066.7479427003962
+      },
+      "mature_height": {
+        "ft": 68.0,
+        "cm": 2072.5388601036266
+      },
+      "low_growing_grass": null,
+      "lifespan": "Short",
+      "leaf_retention": null,
+      "known_allelopath": null,
+      "growth_rate": "Rapid",
+      "growth_period": "Spring and Summer",
+      "growth_habit": "Tree",
+      "growth_form": "Single Stem",
+      "fire_resistance": null,
+      "fall_conspicuous": true,
+      "coppice_potential": true,
+      "c_n_ratio": "High",
+      "bloat": "None"
+    },
+    "sources": [
+      {
+        "species_id": 101852,
+        "source_url": "https://plants.usda.gov",
+        "name": "USDA",
+        "last_update": "2019-01-11T09:40:31.149172"
+      }
+    ],
+    "soils_adaptation": {
+      "medium": true,
+      "fine": true,
+      "coarse": true
+    },
+    "slug": "acer-rubrum",
+    "seed": {
+      "vegetative_spread_rate": "None",
+      "small_grain": null,
+      "seeds_per_pound": 22720.0,
+      "seedling_vigor": "Medium",
+      "seed_spread_rate": "Moderate",
+      "commercial_availability": "Routinely Available",
+      "bloom_period": "Early Spring"
+    },
+    "scientific_name": "Acer rubrum",
+    "propagation": {
+      "tubers": null,
+      "sprigs": null,
+      "sod": null,
+      "seed": true,
+      "cuttings": null,
+      "corms": null,
+      "container": true,
+      "bulbs": null,
+      "bare_root": true
+    },
+    "products": {
+      "veneer": true,
+      "pulpwood": true,
+      "protein_potential": "Low",
+      "post": null,
+      "palatable_human": true,
+      "palatable_graze_animal": "Low",
+      "palatable_browse_animal": "Medium",
+      "nursery_stock": true,
+      "naval_store": null,
+      "lumber": true,
+      "fuelwood": "Medium",
+      "fodder": null,
+      "christmas_tree": null,
+      "berry_nut_seed": null
+    },
+    "native_status": "L48(N)CAN(N)",
+    "main_species_id": null,
+    "is_main_species": true,
+    "images": [
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/7/7a/2013-05-10_13_40_17_Immature_foliage_of_Red_Maple_in_Brendan_T_Byrne_State_Forest%2C_New_Jersey.jpg"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/e/e3/2014-10-30_11_09_40_Red_Maple_during_autumn_on_Lower_Ferry_Road_in_Ewing%2C_New_Jersey.JPG"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/1/18/2014-10-30_13_47_46_Red_Maple_during_autumn_along_Terrace_Boulevard_in_Ewing%2C_New_Jersey.JPG"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/a/af/2015-04-12_16_31_55_Male_Red_Maple_flowers_on_Bayberry_Road_in_Ewing%2C_New_Jersey.jpg"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/e/eb/2015-04-13_10_38_10_Female_Red_Maple_flowers_on_Madison_Avenue_in_Ewing%2C_New_Jersey.jpg"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Acer_rubrum.jpg"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/1/16/Acer_rubrum_drummondii_drawing.png"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/4/42/Acer_rubrum_range_map.png"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Acerbark8344.jpg"
+      },
+      {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/3/39/Autumn_Blaze_Maple_in_Toronto.jpg"
+      }
+    ],
+    "id": 101852,
+    "growth": {
+      "temperature_minimum": {
+        "deg_f": -47.0,
+        "deg_c": -43.888888888888886
+      },
+      "shade_tolerance": "Intermediate",
+      "salinity_tolerance": "None",
+      "root_depth_minimum": {
+        "inches": 30.0,
+        "cm": 76.20015240030482
+      },
+      "resprout_ability": true,
+      "precipitation_minimum": {
+        "inches": 25.0,
+        "cm": 63.500127000254004
+      },
+      "precipitation_maximum": {
+        "inches": 80.0,
+        "cm": 203.20040640081282
+      },
+      "planting_density_minimum": {
+        "sqm": 687966.2000000001,
+        "acre": 170.0
+      },
+      "planting_density_maximum": {
+        "sqm": 4856232.0,
+        "acre": 1.2e3
+      },
+      "ph_minimum": 4.7,
+      "ph_maximum": 7.3,
+      "moisture_use": "High",
+      "hedge_tolerance": "Low",
+      "frost_free_days_minimum": 80.0,
+      "fire_tolerance": "Low",
+      "fertility_requirement": "Medium",
+      "drought_tolerance": "Medium",
+      "cold_stratification_required": null,
+      "caco_3_tolerance": "High",
+      "anaerobic_tolerance": "Medium"
+    },
+    "fruit_or_seed": {
+      "seed_persistence": null,
+      "seed_period_end": "Spring",
+      "seed_period_begin": "Spring",
+      "seed_abundance": "High",
+      "conspicuous": true,
+      "color": "Red"
+    },
+    "foliage": {
+      "texture": "Medium",
+      "porosity_winter": "Porous",
+      "porosity_summer": "Dense",
+      "color": "Green"
+    },
+    "flower": {
+      "conspicuous": true,
+      "color": "Red"
+    },
+    "family_common_name": "Maple family",
+    "duration": "Perennial",
+    "complete_data": true,
+    "common_name": "red maple",
+    "bibliography": null,
+    "author": null
+  },
+  "images": [
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/7/7a/2013-05-10_13_40_17_Immature_foliage_of_Red_Maple_in_Brendan_T_Byrne_State_Forest%2C_New_Jersey.jpg"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/e3/2014-10-30_11_09_40_Red_Maple_during_autumn_on_Lower_Ferry_Road_in_Ewing%2C_New_Jersey.JPG"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/1/18/2014-10-30_13_47_46_Red_Maple_during_autumn_along_Terrace_Boulevard_in_Ewing%2C_New_Jersey.JPG"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/a/af/2015-04-12_16_31_55_Male_Red_Maple_flowers_on_Bayberry_Road_in_Ewing%2C_New_Jersey.jpg"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/eb/2015-04-13_10_38_10_Female_Red_Maple_flowers_on_Madison_Avenue_in_Ewing%2C_New_Jersey.jpg"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Acer_rubrum.jpg"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/1/16/Acer_rubrum_drummondii_drawing.png"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/42/Acer_rubrum_range_map.png"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Acerbark8344.jpg"
+    },
+    {
+      "url": "https://upload.wikimedia.org/wikipedia/commons/3/39/Autumn_Blaze_Maple_in_Toronto.jpg"
+    }
+  ],
+  "id": 101852,
+  "hybrids": [],
+  "genus": {
+    "slug": "acer",
+    "name": "Acer",
+    "link": "http://trefle.io/api/genuses/39",
+    "id": 39
+  },
+  "forms": [
+    {
+      "year": null,
+      "type": "form",
+      "synonym": false,
+      "status": "Accepted",
+      "sources": [
+        {
+          "species_id": 198201,
+          "source_url": "http://www.tropicos.org",
+          "name": "Tropicos",
+          "last_update": "2019-01-11T16:01:57.100387"
+        }
+      ],
+      "slug": "acer-rubrum-fo-rubrum",
+      "scientific_name": "Acer rubrum fo. rubrum",
+      "main_species_id": 101852,
+      "link": "http://trefle.io/api/plants/198201",
+      "is_main_species": false,
+      "id": 198201,
+      "family_common_name": "Maple family",
+      "complete_data": true,
+      "common_name": "red maple",
+      "bibliography": null,
+      "author": null
+    },
+    {
+      "year": null,
+      "type": "form",
+      "synonym": false,
+      "status": "Accepted",
+      "sources": [
+        {
+          "species_id": 198210,
+          "source_url": "http://www.tropicos.org",
+          "name": "Tropicos",
+          "last_update": "2019-01-11T16:02:04.735636"
+        }
+      ],
+      "slug": "acer-rubrum-fo-pallidiflorum",
+      "scientific_name": "Acer rubrum fo. pallidiflorum",
+      "main_species_id": 101852,
+      "link": "http://trefle.io/api/plants/198210",
+      "is_main_species": false,
+      "id": 198210,
+      "family_common_name": "Maple family",
+      "complete_data": true,
+      "common_name": "red maple",
+      "bibliography": "Rhodora 51(605): 103. 1949. (Rhodora) ",
+      "author": "Fernald"
+    },
+    {
+      "year": null,
+      "type": "form",
+      "synonym": false,
+      "status": "Accepted",
+      "sources": [
+        {
+          "species_id": 198199,
+          "source_url": "http://www.tropicos.org",
+          "name": "Tropicos",
+          "last_update": "2019-01-11T16:01:55.947569"
+        }
+      ],
+      "slug": "acer-rubrum-fo-tomentosum",
+      "scientific_name": "Acer rubrum fo. tomentosum",
+      "main_species_id": 101852,
+      "link": "http://trefle.io/api/plants/198199",
+      "is_main_species": false,
+      "id": 198199,
+      "family_common_name": "Maple family",
+      "complete_data": true,
+      "common_name": "red maple",
+      "bibliography": "Le Naturaliste Canadien 72: 128. 1945. (Naturaliste Canad.) ",
+      "author": "Dans."
+    },
+    {
+      "year": null,
+      "type": "form",
+      "synonym": false,
+      "status": "Accepted",
+      "sources": [
+        {
+          "species_id": 198182,
+          "source_url": "http://www.tropicos.org",
+          "name": "Tropicos",
+          "last_update": "2019-01-11T16:01:33.564064"
+        }
+      ],
+      "slug": "acer-rubrum-fo-breviramusculum",
+      "scientific_name": "Acer rubrum fo. breviramusculum",
+      "main_species_id": 101852,
+      "link": "http://trefle.io/api/plants/198182",
+      "is_main_species": false,
+      "id": 198182,
+      "family_common_name": "Maple family",
+      "complete_data": true,
+      "common_name": "red maple",
+      "bibliography": "Le Naturaliste Canadien 71: 202, fig.1. 1944. (Naturaliste Canad.) ",
+      "author": "Vict."
+    },
+    {
+      "year": null,
+      "type": "form",
+      "synonym": false,
+      "status": "Accepted",
+      "sources": [
+        {
+          "species_id": 198200,
+          "source_url": "http://www.tropicos.org",
+          "name": "Tropicos",
+          "last_update": "2019-01-11T16:01:56.528940"
+        }
+      ],
+      "slug": "acer-rubrum-fo-columnare",
+      "scientific_name": "Acer rubrum fo. columnare",
+      "main_species_id": 101852,
+      "link": "http://trefle.io/api/plants/198200",
+      "is_main_species": false,
+      "id": 198200,
+      "family_common_name": "Maple family",
+      "complete_data": true,
+      "common_name": "red maple",
+      "bibliography": null,
+      "author": "Dans."
+    }
+  ],
+  "family_common_name": "Maple family",
+  "family": {
+    "slug": "aceraceae",
+    "name": "Aceraceae",
+    "link": "http://trefle.io/api/families/19",
+    "id": 19,
+    "common_name": "Maple family"
+  },
+  "duration": "Perennial",
+  "division": {
+    "slug": "magnoliophyta",
+    "name": "Magnoliophyta",
+    "link": "http://trefle.io/api/divisions/1",
+    "id": 1
+  },
+  "cultivars": [],
+  "common_name": "red maple",
+  "class": {
+    "slug": "magnoliopsida",
+    "name": "Magnoliopsida",
+    "link": "http://trefle.io/api/division_classes/1",
+    "id": 1
+  }
+}

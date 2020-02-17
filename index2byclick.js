@@ -23,7 +23,6 @@ const request = require("request");
 const apiKey = secret.apiKey;
 const apiSecret = secret.apiSecret;
 const trfleToken = secret.trefleToken;
-const vision = require("@google-cloud/vision");
 let imageUrl;
 // let imageUrl =
 //   "https://upload.wikimedia.org/wikipedia/commons/9/99/Field_of_Mentha_x_piperita_02.jpg";
@@ -84,34 +83,6 @@ const uploader = multer({
     fileSize: 2097152
   }
 });
-
-/// GOOGLE API ////
-
-const googleAPI = async function quickstart(file) {
-  // let resultsArr = [];
-
-  // Creates a client
-  const client = new vision.ImageAnnotatorClient({
-    keyFilename: "./APIKey.json"
-  });
-
-  // Performs web and label detection on the image file
-  const [resultsPics] = await client.webDetection(file);
-
-  const webEntities = resultsPics.webDetection.webEntities;
-  // console.log("images :", webEntities);
-
-  // const [resultsName] = await client.labelDetection(file);
-  // const labels = resultsName.labelAnnotations;
-
-  // images.forEach(webEntitie => {
-  //   resultsArr.push({ webEntitie: webEntitie.description });
-  // });
-  // labels.forEach(label => {
-  //   resultsArr.push({ label: label.description });
-  // });
-  return webEntities;
-};
 
 ///// ROUTES /////
 
@@ -196,9 +167,6 @@ app.post("/login", function(req, res) {
 
 app.post("/upload", uploader.single("file"), async (req, res) => {
   console.log("**************************  upload POST");
-  if (!req.session.userId) {
-    res.redirect("/welome");
-  }
   // console.log("req.file: ", req.file);
   // console.log("path: ", req.file.path);
   // console.log("filePathLocal: ", filePathLocal);
@@ -207,28 +175,34 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
     (formData = {
       image: fs.createReadStream(filePath)
     });
-  let file = formData.image.path;
   let allResults = [];
-
-  const p1 = await new Promise((resolve, reject) => {
-    googleAPI(file).then(results => {
-      let firstResultsFromGoogle = results[0].description;
-      // console.log("results from googleVision: ", results);
-      // console.log("firstResultsFromGoogle: ", firstResultsFromGoogle);
-      allResults.push(results);
-      // const getTrefle = await getTrefle(firstResultsFromGoogle);
-      // console.log("get trefle results from googleAPI: ", getTrefle);
-      resolve(firstResultsFromGoogle);
-    });
+  const p1 = new Promise((resolve, reject) => {
+    request
+      .post(
+        { url: "https://api.imagga.com/v2/tags", formData: formData },
+        function(error, response, body) {
+          // console.log("response: ", response);
+          // console.log("Status:", response.statusCode);
+          // console.log("Headers:", JSON.stringify(response.headers));
+          // console.log(
+          //   "First response from imagga:",
+          //   JSON.parse(body).result.tags
+          // );
+          let results = JSON.parse(body).results.tags;
+          allResults.push(results);
+          // firstResultImagga = JSON.parse(body).result.tags[0].tag.en;
+          // res.json(body);
+          resolve(JSON.parse(body).result.tags[0].tag.en);
+        }
+      )
+      .auth(apiKey, apiSecret, true);
   });
 
-  function getTrefle(firstResultsFromGoogle) {
-    // console.log("firstResult: ", firstResult);
+  function getTrefle(imagga) {
     return new Promise((resolve, reject) => {
-      // console.log("firstResultsFromGoogle: ", firstResult);
       let body = "";
       https.get(
-        `https://trefle.io/api/plants?q=${firstResultsFromGoogle}&complete_data=true&token=${trfleToken}`,
+        `https://trefle.io/api/plants?q=${imagga}&token=${trfleToken}`,
         res => {
           res.on("data", function(chunk) {
             body += chunk;
@@ -236,66 +210,16 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
           res.on("end", function() {
             // console.log("body from getTrefle: ", body);
             // console.log("parsed body from getTrefle: ", JSON.parse(body));
-            let parsedBody = JSON.parse(body);
-
-            // console.log("parsedBody: ", parsedBody);
-
-            allResults.push(parsedBody);
-            // console.log("allResults: ", allResults);
-            resolve(allResults);
+            let results = JSON.parse(body);
+            allResults.push(results);
+            console.log("allResults: ", allResults);
+            resolve(JSON.parse(body));
           });
         }
       );
     });
   }
 
-  // console.log("formData: ", formData.image.path);
-  // })
-  //   .then(console.log("p1: ", p1))
-  //   .catch(err => err);
-
-  console.log("p1: ", p1);
-  // console.log("firstResult :", firstResult);
-  // const p1 = new Promise((resolve, reject) => {
-  //   request
-  //     .post(
-  //       { url: "https://api.imagga.com/v2/tags", formData: formData },
-  //       function(error, response, body) {
-  //         // console.log("response: ", response);
-  //         // console.log("Status:", response.statusCode);
-  //         // console.log("Headers:", JSON.stringify(response.headers));
-  //         console.log(
-  //           "First response from imagga:",
-  //           JSON.parse(body).result.tags
-  //         );
-  //         // firstResultImagga = JSON.parse(body).result.tags[0].tag.en;
-  //         // res.json(body);
-  //         resolve(JSON.parse(body).result.tags[0].tag.en);
-  //       }
-  //     )
-  //     .auth(apiKey, apiSecret, true);
-  // });
-  //
-  // function getTrefle(firstResultsFromGoogle) {
-  //   // return new Promise((resolve, reject) => {
-  //   let body = "";
-  //   https.get(
-  //     `https://trefle.io/api/plants?q=${firstResultsFromGoogle}&token=${trfleToken}`,
-  //     res => {
-  //       res.on("data", function(chunk) {
-  //         body += chunk;
-  //       });
-  //       res.on("end", function() {
-  //         console.log("body from getTrefle: ", body);
-  //         // console.log("parsed body from getTrefle: ", JSON.parse(body));
-  //         resolve(JSON.parse(body));
-  //       });
-  //     }
-  //   );
-  //   // });
-  // }
-  // console.log("firstResult :", firstResult);
-  //
   function getImage(url) {
     return new Promise((resolve, reject) => {
       let host = url.slice(8, 17);
@@ -310,7 +234,7 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
         }
       };
       let body = "";
-      // let parsedResults = "";
+      let parsedResults = "";
       https
         .get(options, res => {
           res.on("data", function(chunk) {
@@ -318,29 +242,29 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
             // console.log("body: ", body);
           });
           res.on("end", function() {
-            // console.log("JSON.parse(body) FROM GETIMAGE: ", JSON.parse(body));
-            // console.log("body: ", body);
-            // if (JSON.parse(body).images[0] != undefined) {
             // console.log(
             //   "JSON.parse(body).images[0]: ",
             //   JSON.parse(body).images[0]
             // );
-            // console.log("^^^^^^^ YES ^^^^^^^");
-            // parsedResults += JSON.parse(body);
-            // console.log("parsedResults inside if: ", parsedResults);
-            // }
-            // console.log("parsedResults: ", parsedResults);
-            resolve(JSON.parse(body));
+            if (JSON.parse(body).images[0] != undefined) {
+              // console.log(
+              //   "JSON.parse(body).images[0].url: ",
+              //   JSON.parse(body).images[0].url
+              // );
+              // console.log("^^^^^^^ YES ^^^^^^^");
+              parsedResults += JSON.parse(body).images[0].url;
+              // console.log("parsedResults inside if: ", parsedResults);
+            }
+            // console.log("parsedResults outside if: ", parsedResults);
+            resolve(parsedResults);
           });
 
           if (res.statusCode == 200) {
-            // console.log("statusCode 200");
+            // console.log("body from 200: ", body);
             // console.log("parsedResults statusCode 200:", parsedResults);
             // resolve(parsedResults);
           } else {
-            console.log("status code not 200");
-            // console.log("error: ");
-            // console.log(res);
+            console.log("error: ");
             reject(res.statusMessage);
           }
         })
@@ -349,50 +273,39 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
         });
     });
   }
-  //
+
   async function fetch() {
-    try {
-      const google = await p1;
-      const plants = await getTrefle(google);
-      // console.log("JSON.parse(plants)", JSON.parse(plants));
-      // console.log("plants: ", plants);
+    const imagga = await p1;
+    const plants = await getTrefle(imagga);
+    // console.log("JSON.parse(plants)", JSON.parse(plants));
+    // console.log("plants: ", plants);
 
-      const imageUrls = plants[1].map(plant => plant.link);
-      console.log("imageUrls: ", imageUrls);
-      // const urls = imageUrls.reduce(function(array, url) {
-      //   url = url.replace("http", "https");
-      //   console.log("url: ", url);
-      //   // console.log("array: ", array);
-      //   array.push(getImage(url));
-      //   // console.log("array: ", array);
-      //   return array;
-      // }, []);
-      // console.log("urls[0]: ", urls[0]);
-      // // console.log("plants: ", plants);
-      if (imageUrls.length > 0) {
-        console.log("we are in if");
-        const promises = await Promise.all([
-          getImage(imageUrls[0].replace("http", "https"))
-        ]);
-        console.log("promises: ", promises);
+    const imageUrls = plants.map(plant => plant.link);
+    // console.log("imageUrls: ", imageUrls);
+    const urls = imageUrls.reduce(function(array, url) {
+      url = url.replace("http", "https");
+      // console.log("url: ", url);
+      // console.log("array: ", array);
+      array.push(getImage(url));
+      // console.log("array: ", array);
+      return array;
+    }, []);
+    // console.log("urls: ", urls);
+    // console.log("plants: ", plants);
+    const promises = await Promise.all(urls);
+    // console.log("promises: ", promises);
 
-        let imagesLinks = promises.forEach((item, i) => {
-          // console.log("plants[1][i]: ", plants[1][i]);
-          console.log("item: ", item);
-          if (item != "") {
-            // console.log("plants from fetch: ", plants);
-            plants[1][i].allResults = item;
-          }
-          // console.log("plants[i]: ", plants[i]);
-        });
+    let imagesLinks = promises.forEach((item, i) => {
+      // console.log("plants[i]: ", plants[i]);
+      if (item != "") {
+        plants[i].imageUrl = item;
+        // console.log("item: ", item);
       }
-      // console.log("allResults: ", allResults);
-      // console.log("plants: ", plants);
-      // console.log("imagesLinks: ", imagesLinks);
-      res.json(plants);
-    } catch (err) {
-      console.log("err from try: ", err);
-    }
+      // console.log("item: ", item);
+      // console.log("plants[i]: ", plants[i]);
+    });
+    console.log("plants: ", plants);
+    res.json(plants);
   }
 
   return fetch();
@@ -400,12 +313,12 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
 
 app.get("*", function(req, res) {
   console.log("*************************** GET *");
-  if (!req.session.userId) {
-    console.log("*************************** REDIRECT TO WELCOME");
-    res.redirect("/welcome");
-  } else {
-    res.sendFile(__dirname + "/index.html");
-  }
+  // if (!req.session.userId) {
+  //   console.log("*************************** REDIRECT TO WELCOME");
+  //   res.redirect("/welcome");
+  // } else {
+  res.sendFile(__dirname + "/index.html");
+  // }
 });
 
 app.listen(8080, function() {

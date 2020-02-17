@@ -46,25 +46,20 @@ export default class Test extends React.Component {
       .then(results => {
         // console.log("results from post upload: ", results);
         // var parsedResults = JSON.parse(results.data);
-        // console.log("trefle: ", results.data[1]);
-        // console.log("google: ", results.data[0]);
-        this.setState({ google: results.data[0] });
-        this.setState({ trefle: results.data[1] });
+        // console.log("results.data: ", results.data);
+        this.setState({ parsedResults: results.data });
         this.fileInput.value = "";
       })
       .catch(err => {
         console.log("err: ", err);
       });
   }
-  showGoogleResults(e) {
-    this.setState({ showGoogleResults: true });
-  }
 
   render() {
     console.log("this.state from test: ", this.state);
     return (
       <div className="test">
-        <h1>Upload your picture to get results</h1>
+        <h1>I am from test</h1>
         <br />
         <form>
           <input
@@ -76,48 +71,19 @@ export default class Test extends React.Component {
           />
         </form>
         <button onClick={e => this.clickHandler(e)}>Click Me</button>
-        <br />
-        <br />
-        {this.state.trefle && (
+        {this.state.done && <div>done</div>}
+        {this.state.parsedResults && (
           <div>
-            {this.state.trefle.length == 0 && (
-              <p className="no-results">We have no results for you, sorry.</p>
-            )}
-            <br />
-            <p
-              className="did-you-mean"
-              onClick={e => this.showGoogleResults(e)}
-            >
-              Did you mean something else ?<br />
-              Click here
-            </p>
-            <br />
-            {this.state.showGoogleResults && (
-              <div className="google-results">
-                {this.state.google.map((result, key) => {
-                  return (
-                    console.log("result: ", result.description),
-                    <p>{result.description}</p>
-                  );
-                })}
-              </div>
-            )}
-            {this.state.trefle.map((result, key) => (
-              <div className="result" key={key}>
-                {result.allResults && (
-                  <>
-                    <p>{result.common_name}</p>
-                    {result.allResults.images[0].url && (
-                      <img
-                        style={{ width: "400px" }}
-                        src={result.allResults.images[0].url}
-                      />
-                    )}
-                    {!result.allResults.images[0].url && (
-                      <p>We didnt find any pictures, sorry.</p>
-                    )}
-                  </>
+            {" "}
+            <p>results</p>
+            {this.state.parsedResults.map((result, key) => (
+              <div key={key}>
+                {result.imageUrl && (
+                  <img style={{ width: "400px" }} src={result.imageUrl} />
                 )}
+
+                {result.slut}
+                {result.common_name}
               </div>
             ))}
           </div>
