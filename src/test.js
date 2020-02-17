@@ -26,19 +26,6 @@ export default class Test extends React.Component {
   }
 
   clickHandler(e) {
-    // let image = this.state.picture;
-    // console.log("file: ", this.state.file);
-    //
-    // axios.post("/click").then(results => {
-    //   // console.log("Restuls: ", results);
-    //   this.setState({ done: true });
-    //   var results = results.data;
-    //   var parsedResults = JSON.parse(results);
-    //   console.log("parsedResults: ", parsedResults);
-    //   this.setState({ parsedResults: parsedResults });
-    //   // this.props.editTest(parsedResults[0]);
-    // });
-
     var formData = new FormData();
     formData.append("file", this.state.file);
     axios
@@ -58,6 +45,24 @@ export default class Test extends React.Component {
   }
   showGoogleResults(e) {
     this.setState({ showGoogleResults: true });
+  }
+  resultHandler(e) {
+    console.log("e.taret.innerHTML: ", e.target.innerHTML);
+    let result = e.target.innerHTML;
+    axios
+      .post("/upload", result)
+      .then(results => {
+        // console.log("results from post upload: ", results);
+        // var parsedResults = JSON.parse(results.data);
+        // console.log("trefle: ", results.data[1]);
+        // console.log("google: ", results.data[0]);
+        this.setState({ google: results.data[0] });
+        this.setState({ trefle: results.data[1] });
+        this.fileInput.value = "";
+      })
+      .catch(err => {
+        console.log("err: ", err);
+      });
   }
 
   render() {
@@ -96,8 +101,13 @@ export default class Test extends React.Component {
               <div className="google-results">
                 {this.state.google.map((result, key) => {
                   return (
-                    console.log("result: ", result.description),
-                    <p>{result.description}</p>
+                    <p
+                      key={key}
+                      name={result.description}
+                      onClick={e => this.resultHandler(e)}
+                    >
+                      {result.description}
+                    </p>
                   );
                 })}
               </div>
