@@ -26,7 +26,7 @@ const trfleToken = secret.trefleToken;
 const googlePhotosCliendId = secret.googlePhotosCliendId;
 const googlePhotosSecret = secret.googlePhotosSecret;
 const bingKey = secret.bingKey;
-
+let allResults;
 const vision = require("@google-cloud/vision");
 let imageUrl;
 // let imageUrl =
@@ -198,6 +198,8 @@ app.post("/login", function(req, res) {
     });
 });
 
+//// APIS ////
+
 app.post("/upload", uploader.single("file"), async (req, res) => {
   console.log("**************************  upload POST");
   if (!req.session.userId) {
@@ -213,7 +215,7 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
       image: fs.createReadStream(filePath)
     });
   let file = formData.image.path;
-  let allResults = [];
+  allResults = [];
 
   const p1 = await new Promise((resolve, reject) => {
     googleAPI(file).then(results => {
@@ -244,14 +246,35 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
             body += chunk;
           });
           res.on("end", function() {
-            // console.log("body from getTrefle: ", body);
-            // console.log("parsed body from getTrefle: ", JSON.parse(body));
+            // if there is no full data making another request
+
+            // console.log("body: ", body);
+            // console.log("body.length: ", body.length);
+            //
+            // if (body.length < 3) {
+            //   console.log(
+            //     "no complete results from trefle, making normal request"
+            //   );
+            //   https.get(
+            //     `https://trefle.io/api/plants?q=${firstResultsFromGoogle}&token=${trfleToken}`,
+            //     res => {
+            //       res.on("data", function(chunk) {
+            //         body += chunk;
+            //       });
+            //       res.on("end", function() {
+            //         console.log("body from end of second request :", body);
+            //         // let parseBodyTwo = JSON.parse(body);
+            //         allResults.push(body);
+            //         console.log("all results: ", allResults);
+            //         resolve(allResults);
+            //         return;
+            //       });
+            //     }
+            //   );
+            // }
             let parsedBody = JSON.parse(body);
-
-            // console.log("parsedBody: ", parsedBody);
-
+            console.log("parsedBody from get trefle: ", parsedBody);
             allResults.push(parsedBody);
-            // console.log("allResults: ", allResults);
             resolve(allResults);
           });
         }
@@ -283,6 +306,9 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
             // console.log("body: ", body);
           });
           res.on("end", function() {
+            let parsedBody = JSON.parse(body);
+            // console.log("parsedBody from getImage from trefle: ", parsedBody);
+            allResults.push(parsedBody);
             resolve(JSON.parse(body));
           });
 
@@ -301,12 +327,13 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
   async function fetch() {
     try {
       const google = await p1;
-      const plants = await getTrefle(google);
+      const trefle = await getTrefle(google);
       // console.log("JSON.parse(plants)", JSON.parse(plants));
-      // console.log("plants: ", plants);
+      console.log("googe firstResult: ", google);
+      console.log("trefle: ", trefle);
 
-      const imageUrls = plants[1].map(plant => plant.link);
-      console.log("imageUrls: ", imageUrls);
+      const trefleLinks = trefle[1].map(trefle => trefle.link);
+      // console.log("trefleLinks: ", trefleLinks);
       // const urls = imageUrls.reduce(function(array, url) {
       //   url = url.replace("http", "https");
       //   console.log("url: ", url);
@@ -317,27 +344,27 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
       // }, []);
       // console.log("urls[0]: ", urls[0]);
       // // console.log("plants: ", plants);
-      if (imageUrls.length > 0) {
-        console.log("we are in if");
+      if (trefleLinks.length > 0) {
+        console.log("there is results from trufle");
         const promises = await Promise.all([
-          getImage(imageUrls[0].replace("http", "https"))
+          getImage(trefleLinks[0].replace("http", "https"))
         ]);
-        console.log("promises: ", promises);
+        // console.log("promises: ", promises);
 
-        let imagesLinks = promises.forEach((item, i) => {
+        let trefleItems = promises.forEach((item, i) => {
           // console.log("plants[1][i]: ", plants[1][i]);
-          console.log("item: ", item);
           if (item != "") {
+            // console.log("item from trefleItems: ", item);
             // console.log("plants from fetch: ", plants);
-            plants[1][i].allResults = item;
+            allResults.push(item);
           }
           // console.log("plants[i]: ", plants[i]);
         });
       }
       // console.log("allResults: ", allResults);
-      // console.log("plants: ", plants);
-      // console.log("imagesLinks: ", imagesLinks);
-      res.json(plants);
+      // console.log("trefle: ", trefle);
+      // console.log("allResults from fetch: ", allResults);
+      res.json(allResults);
     } catch (err) {
       console.log("err from try: ", err);
     }
@@ -377,13 +404,45 @@ app.post("/result/:bing", (req, res) => {
       // console.log(`Image result count: ${body.value.length}`);
       // console.log(`First image thumbnail url: ${body.thumbnailUrl}`);
       // console.log(`First image web search url: ${body.webSearchUrl}`);
-      console.log("parsed body: ", JSON.parse(body).value[0]);
-      res.json(JSON.parse(body).value[0].contentUrl);
+      // console.log("parsed body: ", JSON.parse(body).value[0]);
+      let picturesFromBing = JSON.parse(body).value[0].contentUrl;
+      // console.log("allResults[0] - google: ", allResults[0]);
+      // console.log("allresults[1] - trefle: ", allResults[1]);
+      console.log("picturesFromBing: ", picturesFromBing);
+      // allResults.push(picturesFromBing);
+      res.json(picturesFromBing);
+      // res.json(JSON.parse(body).value[0].contentUrl);
     });
   };
   let request = https.request(request_params, response_handler);
   request.end();
 });
+
+// app.post("/userchoise/:userchoise", (req, res) => {
+//   return new Promise((resolve, reject) => {
+//     let allResults = [];
+//     let body = "";
+//     let userChoise = req.params.userchoise;
+//     https.get(
+//       `https://trefle.io/api/plants?q=${userChoise}&token=${trfleToken}`,
+//       res => {
+//         res.on("data", function(chunk) {
+//           body += chunk;
+//         });
+//         res.on("end", function() {
+//           let parseBodyTwo = JSON.parse(body);
+//           console.log(
+//             "parseBodyTwo from end of userChoise request :",
+//             parseBodyTwo
+//           );
+//           // allResults.push(body);
+//           // console.log("all results: ", allResults);
+//           resolve(parseBodyTwo);
+//         });
+//       }
+//     );
+//   });
+// });
 
 app.get("*", function(req, res) {
   console.log("*************************** GET *");
