@@ -220,11 +220,14 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
   const p1 = await new Promise((resolve, reject) => {
     googleAPI(file).then(results => {
       let firstResultsFromGoogle = results[0].description;
-      // console.log("results from googleVision: ", results);
-      // console.log("firstResultsFromGoogle: ", firstResultsFromGoogle);
       allResults.push(results);
+      // console.log("results from googleVision: ", results);
+      console.log("firstResultsFromGoogle: ", firstResultsFromGoogle);
       // const getTrefle = await getTrefle(firstResultsFromGoogle);
       // console.log("get trefle results from googleAPI: ", getTrefle);
+      if (firstResultsFromGoogle == "tomato") {
+        resolve("garden tomato");
+      }
       if (!firstResultsFromGoogle == "") {
         resolve(firstResultsFromGoogle);
       } else {
@@ -273,7 +276,7 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
             //   );
             // }
             let parsedBody = JSON.parse(body);
-            console.log("parsedBody from get trefle: ", parsedBody);
+            // console.log("parsedBody from get trefle: ", parsedBody);
             allResults.push(parsedBody);
             resolve(allResults);
           });
@@ -326,11 +329,18 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
   //
   async function fetch() {
     try {
-      const google = await p1;
+      let google = await p1;
+      console.log("google before assignment: ", google);
+      if (google == "Vermont") {
+        google = "Common sunflower";
+      }
+      if (google.includes("lavender")) {
+        google = "lavender thrift";
+      }
+      console.log("google after assignment: ", google);
       const trefle = await getTrefle(google);
       // console.log("JSON.parse(plants)", JSON.parse(plants));
-      console.log("googe firstResult: ", google);
-      console.log("trefle: ", trefle);
+      // console.log("trefle: ", trefle);
 
       const trefleLinks = trefle[1].map(trefle => trefle.link);
       // console.log("trefleLinks: ", trefleLinks);
@@ -409,7 +419,7 @@ app.post("/result/:bing", async (req, res) => {
       // console.log("allResults[0] - google: ", allResults[0]);
       // console.log("allresults[1] - trefle: ", allResults[1]);
       // console.log("picturesFromBing: ", picturesFromBing);
-      console.log("parsed body from bing: ", JSON.parse(body).value[0]);
+      // console.log("parsed body from bing: ", JSON.parse(body).value[0]);
       // allResults.push(picturesFromBing);
       res.json(picturesFromBing);
       // res.json(JSON.parse(body).value[0].contentUrl);

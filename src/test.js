@@ -38,6 +38,7 @@ export default class Test extends React.Component {
         let trefleResults = results.data[2];
         console.log("trefleResults: ", trefleResults);
         this.setState({ showgif: false });
+        this.setState({ showUploadText: true });
         this.setState({ google: googleResults });
         this.setState({ trefle: [trefleResults] });
         // let bingResults = [];
@@ -54,6 +55,7 @@ export default class Test extends React.Component {
                 console.log("result from google: ", result);
                 console.log("results from bing: ", results);
                 this.setState({ showgif: false });
+                this.setState({ showUploadText: true });
                 let googleCopy = [...this.state.google];
                 googleCopy[index].bing = results.data;
                 console.log("googleCopy: ", googleCopy);
@@ -73,6 +75,8 @@ export default class Test extends React.Component {
       })
       .catch(err => {
         console.log("err: ", err);
+        this.setState({ showUploadText: true });
+        this.setState({ showgif: false });
       });
   }
   showGoogleResults(e) {
@@ -97,6 +101,7 @@ export default class Test extends React.Component {
     console.log("this.state from test: ", this.state);
     return (
       <div className="test">
+        <img className="small-logo" src="/planet-earth.svg" />
         {!this.state.hide && (
           <div className="uploader">
             <h1>Upload your picture to get results</h1>
@@ -113,9 +118,11 @@ export default class Test extends React.Component {
             <button onClick={e => this.clickHandler(e)}>Click Me</button>
           </div>
         )}
-        {this.state.hide && (
-          <div>
-            <a href="/test">Click here to upload new image.</a>
+        {this.state.showUploadText && (
+          <div className="upload-new-pic">
+            <a style={{ color: "black" }} href="/test">
+              Click here to upload new image.
+            </a>
           </div>
         )}
         {this.state.showgif && <img src="/loading.gif" />}
@@ -164,6 +171,8 @@ export default class Test extends React.Component {
               <div className="result" key={key}>
                 {result && (
                   <>
+                    <p> We have exact results for you !</p>
+                    <br />
                     <p>{result.common_name}</p>
                     <br />
                     {result.images.length > 0 && (
@@ -198,19 +207,28 @@ export default class Test extends React.Component {
             {this.state.google[0].bing && (
               <>
                 <p>{this.state.google[0].description}</p>
-                <img src={this.state.google[0].bing} />
+                <img
+                  style={{ width: "400px" }}
+                  src={this.state.google[0].bing}
+                />
               </>
             )}
             {this.state.google[1].bing && (
               <>
                 <p>{this.state.google[1].description}</p>
-                <img src={this.state.google[1].bing} />
+                <img
+                  style={{ width: "400px" }}
+                  src={this.state.google[1].bing}
+                />
               </>
             )}
             {this.state.google[2].bing && (
               <>
                 <p>{this.state.google[2].description}</p>
-                <img src={this.state.google[2].bing} />
+                <img
+                  style={{ width: "400px" }}
+                  src={this.state.google[2].bing}
+                />
               </>
             )}
           </>

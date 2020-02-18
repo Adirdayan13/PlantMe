@@ -17,33 +17,32 @@ export default class Registration extends React.Component {
   render() {
     return (
       <div className="reset">
+        <img className="small-logo" src="/planet-earth.svg" />
         <div className="logo-and-text">
           <h1>Welcome to PlantMe</h1>
           <br />
           <h2>Identify Plant, Flower, Weed and more</h2>
-          <br /> <br /> <br /> <br />
-          <br /> <br /> <br />
-          <img src={"/plant.png"} />
+          <img className="plant-img" src={"/plant.svg"} />
         </div>
-        <p>Reset your password</p>
-        <br />
-        <input
-          className="email"
-          name="email"
-          placeholder="Email"
-          onChange={e => this.handleChange(e)}
-        />
-        <br />
-        <button
-          className="submit-btn-reset"
-          onClick={e => this.handleSubmit(e)}
-        >
-          Reset password
-        </button>
-        <br />
-        <Link style={{ marginBottom: "50px" }} to="/login">
-          Click here to Log in!
-        </Link>
+        <div className="restart-inputs">
+          <p>Reset your password</p>
+          <br />
+          <input
+            className="email"
+            name="email"
+            placeholder="Email"
+            onChange={e => this.handleChange(e)}
+          />
+          <br />
+          <button
+            className="submit-btn-reset"
+            onClick={e => this.handleSubmit(e)}
+          >
+            Reset password
+          </button>
+        </div>
+        <br /> <br /> <br /> <br /> <br />
+        <Link to="/login">Click here to Log in!</Link>
       </div>
     );
   }

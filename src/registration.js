@@ -46,13 +46,12 @@ export default class Registration extends React.Component {
   render() {
     return (
       <div className="register">
+        <img className="small-logo" src="/planet-earth.svg" />
         <div className="logo-and-text">
           <h1>Welcome to PlantMe</h1>
           <br />
           <h2>Identify Plant, Flower, Weed and more</h2>
-          <br /> <br /> <br /> <br />
-          <br /> <br /> <br />
-          <img src={"/plant.png"} />
+          <img className="plant-img" src={"/plant.svg"} />
         </div>
         <div className="register-inputs">
           <input
