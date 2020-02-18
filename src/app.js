@@ -37,8 +37,13 @@ export default class App extends React.Component {
       <div className="app">
         <BrowserRouter>
           <header className="header">
+            <img className="small-logo" src="/planet-earth.svg" />
             <p>PlantMe</p>
+            <a href="/">
+              <img className="upload-logo" src="/upload.svg" />
+            </a>
           </header>
+          <Test />
           <Route
             exact
             path="/test"

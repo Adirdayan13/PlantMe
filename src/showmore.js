@@ -221,7 +221,8 @@ export default class Showmore extends React.Component {
               )}
               {trefleResults.main_species.growth.planting_density_minimum && (
                 <p>
-                  Planting density minimum:{" "}
+                  Planting density minimum:
+                  <br />
                   {trefleResults.main_species.growth.planting_density_minimum.sqm.toFixed(
                     2
                   )}{" "}
@@ -234,7 +235,8 @@ export default class Showmore extends React.Component {
               )}
               {trefleResults.main_species.growth.planting_density_maximum && (
                 <p>
-                  Planting density minimum:{" "}
+                  Planting density minimum:
+                  <br />
                   {trefleResults.main_species.growth.planting_density_maximum.sqm.toFixed(
                     2
                   )}{" "}

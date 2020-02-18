@@ -38,7 +38,6 @@ export default class Test extends React.Component {
         let trefleResults = results.data[2];
         console.log("trefleResults: ", trefleResults);
         this.setState({ showgif: false });
-        this.setState({ showUploadText: true });
         this.setState({ google: googleResults });
         this.setState({ trefle: [trefleResults] });
         // let bingResults = [];
@@ -55,7 +54,6 @@ export default class Test extends React.Component {
                 console.log("result from google: ", result);
                 console.log("results from bing: ", results);
                 this.setState({ showgif: false });
-                this.setState({ showUploadText: true });
                 let googleCopy = [...this.state.google];
                 googleCopy[index].bing = results.data;
                 console.log("googleCopy: ", googleCopy);
@@ -75,7 +73,6 @@ export default class Test extends React.Component {
       })
       .catch(err => {
         console.log("err: ", err);
-        this.setState({ showUploadText: true });
         this.setState({ showgif: false });
       });
   }
@@ -101,7 +98,6 @@ export default class Test extends React.Component {
     console.log("this.state from test: ", this.state);
     return (
       <div className="test">
-        <img className="small-logo" src="/planet-earth.svg" />
         {!this.state.hide && (
           <div className="uploader">
             <h1>Upload your picture to get results</h1>
@@ -116,13 +112,6 @@ export default class Test extends React.Component {
               />
             </form>
             <button onClick={e => this.clickHandler(e)}>Click Me</button>
-          </div>
-        )}
-        {this.state.showUploadText && (
-          <div className="upload-new-pic">
-            <a style={{ color: "black" }} href="/test">
-              Click here to upload new image.
-            </a>
           </div>
         )}
         {this.state.showgif && <img src="/loading.gif" />}
@@ -192,7 +181,11 @@ export default class Test extends React.Component {
             {this.state.trefle[0] != undefined && (
               <div>
                 <p
-                  style={{ textAlign: "center", fontSize: "20px" }}
+                  style={{
+                    textAlign: "center",
+                    fontSize: "20px",
+                    color: "white"
+                  }}
                   onClick={() => this.setState({ show: true })}
                 >
                   Click here for more info
