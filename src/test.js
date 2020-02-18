@@ -45,18 +45,19 @@ export default class Test extends React.Component {
         // Make request to bing only if no results from trefle
         if (trefleResults == undefined) {
           console.log("no results from trefle");
-          let dynamicIndex = 0;
-          googleResults.slice(0, 3).forEach(result => {
+
+          googleResults.slice(0, 3).forEach((result, index) => {
             // post to bing if there is no results from trefle
             axios
               .post("/result/" + result.description)
               .then(results => {
+                console.log("result from google: ", result);
                 console.log("results from bing: ", results);
                 this.setState({ showgif: false });
                 let googleCopy = [...this.state.google];
-                googleCopy[dynamicIndex].bing = results.data;
+                googleCopy[index].bing = results.data;
                 console.log("googleCopy: ", googleCopy);
-                dynamicIndex++;
+
                 // bingResults.push(results.data);
                 this.setState({ google: googleCopy });
                 this.fileInput.value = "";
@@ -195,13 +196,22 @@ export default class Test extends React.Component {
         {this.state.google && (
           <>
             {this.state.google[0].bing && (
-              <img src={this.state.google[0].bing} />
+              <>
+                <p>{this.state.google[0].description}</p>
+                <img src={this.state.google[0].bing} />
+              </>
             )}
             {this.state.google[1].bing && (
-              <img src={this.state.google[1].bing} />
+              <>
+                <p>{this.state.google[1].description}</p>
+                <img src={this.state.google[1].bing} />
+              </>
             )}
             {this.state.google[2].bing && (
-              <img src={this.state.google[2].bing} />
+              <>
+                <p>{this.state.google[2].description}</p>
+                <img src={this.state.google[2].bing} />
+              </>
             )}
           </>
         )}

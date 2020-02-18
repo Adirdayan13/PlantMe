@@ -373,7 +373,7 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
   return fetch();
 });
 
-app.post("/result/:bing", (req, res) => {
+app.post("/result/:bing", async (req, res) => {
   let bingSearchDynamic = req.params.bing + " plant";
   console.log("bingSearchDynamic: ", bingSearchDynamic);
 
@@ -395,7 +395,7 @@ app.post("/result/:bing", (req, res) => {
     }
   };
 
-  let response_handler = function(response) {
+  let response_handler = async function(response) {
     let body = "";
     response.on("data", function(d) {
       body += d;
@@ -408,13 +408,14 @@ app.post("/result/:bing", (req, res) => {
       let picturesFromBing = JSON.parse(body).value[0].contentUrl;
       // console.log("allResults[0] - google: ", allResults[0]);
       // console.log("allresults[1] - trefle: ", allResults[1]);
-      console.log("picturesFromBing: ", picturesFromBing);
+      // console.log("picturesFromBing: ", picturesFromBing);
+      console.log("parsed body from bing: ", JSON.parse(body).value[0]);
       // allResults.push(picturesFromBing);
       res.json(picturesFromBing);
       // res.json(JSON.parse(body).value[0].contentUrl);
     });
   };
-  let request = https.request(request_params, response_handler);
+  let request = await https.request(request_params, response_handler);
   request.end();
 });
 
