@@ -1,4 +1,5 @@
 import React from "react";
+import Tooltip from "react-tooltip-lite";
 
 export default class Showmore extends React.Component {
   constructor(props) {
@@ -18,19 +19,43 @@ export default class Showmore extends React.Component {
         {trefleResults && (
           <>
             <div className="love">
-              <p>I love</p>
-              {trefleResults.main_species.growth.shade_tolerance ==
-                "Intolerant" && (
+              {trefleResults.main_species.specifications.growth_period && (
+                <Tooltip
+                  content={`I am grow in ${trefleResults.main_species.specifications.growth_period}`}
+                >
+                  <img style={{ width: "40px" }} src="/growth.svg" />
+                </Tooltip>
+              )}
+              {trefleResults.main_species.seed.bloom_period && (
+                <Tooltip
+                  content={`I am bloom in ${trefleResults.main_species.seed.bloom_period}`}
+                >
+                  <img style={{ width: "40px" }} src="/bloom.svg" />
+                </Tooltip>
+              )}
+              {trefleResults.main_species.growth.shade_tolerance && (
                 <>
-                  <br />
-                  <img style={{ width: "40px" }} src="/sun.svg" />
+                  <Tooltip
+                    content={`My shade tolerance is ${trefleResults.main_species.growth.shade_tolerance}`}
+                  >
+                    <img style={{ width: "40px" }} src="/sun.svg" />
+                  </Tooltip>
                 </>
               )}
-              {trefleResults.main_species.growth.moisture_use == "High" && (
-                <img style={{ width: "40px" }} src="/humidity.svg" />
+              {trefleResults.main_species.growth.moisture_use && (
+                <Tooltip
+                  content={`I love ${trefleResults.main_species.growth.moisture_use} humid level`}
+                >
+                  <img style={{ width: "40px" }} src="/humidity.svg" />
+                </Tooltip>
               )}
-              {trefleResults.main_species.growth.drought_tolerance ==
-                "High" && <img style={{ width: "40px" }} src="/drought.svg" />}
+              {trefleResults.main_species.growth.drought_tolerance && (
+                <Tooltip
+                  content={`My drought level is ${trefleResults.main_species.growth.drought_tolerance}`}
+                >
+                  <img style={{ width: "40px" }} src="/drought.svg" />
+                </Tooltip>
+              )}
             </div>
 
             <div className="names">

@@ -221,11 +221,13 @@ app.post("/garden", uploader.single("file"), s3.upload, (req, res) => {
 app.post("/updategarden", (req, res) => {
   console.log("req.body from updategarden: ", req.body);
   let userId = req.session.userId;
-  let shade = req.body.shade;
-  let drought = req.body.drought;
-  let moisture = req.body.moisture;
   let columnId = req.body.columnId;
-  db.updateGarden(columnId, shade, drought, moisture)
+  let shade = req.body.shade;
+  let moisture = req.body.moisture;
+  let drought = req.body.drought;
+  let bloom = req.body.bloom;
+  let growth = req.body.growth;
+  db.updateGarden(columnId, shade, drought, moisture, bloom, growth)
     .then(results => {
       console.log("results from update garden: ", results);
       res.json(results);
@@ -285,32 +287,6 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
             body += chunk;
           });
           res.on("end", function() {
-            // if there is no full data making another request
-
-            // console.log("body: ", body);
-            // console.log("body.length: ", body.length);
-            //
-            // if (body.length < 3) {
-            //   console.log(
-            //     "no complete results from trefle, making normal request"
-            //   );
-            //   https.get(
-            //     `https://trefle.io/api/plants?q=${firstResultsFromGoogle}&token=${trfleToken}`,
-            //     res => {
-            //       res.on("data", function(chunk) {
-            //         body += chunk;
-            //       });
-            //       res.on("end", function() {
-            //         console.log("body from end of second request :", body);
-            //         // let parseBodyTwo = JSON.parse(body);
-            //         allResults.push(body);
-            //         console.log("all results: ", allResults);
-            //         resolve(allResults);
-            //         return;
-            //       });
-            //     }
-            //   );
-            // }
             let parsedBody = JSON.parse(body);
             // console.log("parsedBody from get trefle: ", parsedBody);
             allResults.push(parsedBody);
@@ -366,19 +342,15 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
   async function fetch() {
     try {
       let google = await p1;
-      if (google == "Vermont" || "Krystal Ann Photography") {
+      if (google == "Vermont" || google == "Krystal Ann Photography") {
         google = "Common sunflower";
       }
       if (google.includes("lavender")) {
         google = "lavender thrift";
       }
-
       const trefle = await getTrefle(google);
-      // console.log("trefle: ", trefle);
       const trefleLinks = trefle[1].map(trefle => trefle.link);
-      console.log("trefleLinks: ", trefleLinks);
       if (trefleLinks.length > 0) {
-        console.log("there is results from trufle");
         const promises = await Promise.all([
           getImage(trefleLinks[0].replace("http", "https"))
         ]);

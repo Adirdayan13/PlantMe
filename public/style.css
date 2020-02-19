@@ -134,6 +134,10 @@ button {
   box-shadow: 5px 5px 10px 1px black;
 }
 
+.love {
+  display: flex;
+  flex-direction: row;
+}
 .result-img {
   border-radius: 40px;
   box-shadow: 5px 5px 10px 1px black;
@@ -162,4 +166,43 @@ button {
   width: 50px;
   display: flex;
   margin: 5px;
+}
+
+.small-logos {
+  display: flex;
+}
+
+.react-tooltip-lite {
+  background: #333;
+  color: white;
+}
+
+.garden-div-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 60px;
+  font-family: orange;
+}
+
+.garden-div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: orange;
+  font-size: 40px;
+}
+
+.garden-results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid white;
+  padding: 15px;
+  border-radius: 20px;
+  margin: 10px;
+  box-shadow: 5px 5px 10px 1px black;
 }

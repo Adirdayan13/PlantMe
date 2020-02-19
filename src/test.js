@@ -62,16 +62,27 @@ export default class Test extends React.Component {
               this.setState({ noResults: true });
             }
             if (
-              trefleResults.main_species.growth.shade_tolerance ||
-              trefleResults.main_species.growth.moisture_use ||
-              trefleResults.main_species.growth.drought_tolerance
+              trefleResults.main_species.growth.shade_tolerance &&
+              trefleResults.main_species.growth.moisture_use &&
+              trefleResults.main_species.growth.drought_tolerance &&
+              trefleResults.main_species.seed.bloom_period &&
+              trefleResults.main_species.specifications.growth_period
             ) {
+              let bloom = trefleResults.main_species.seed.bloom_period;
               let drought = trefleResults.main_species.growth.drought_tolerance;
               let moisture = trefleResults.main_species.growth.moisture_use;
               let shade = trefleResults.main_species.growth.shade_tolerance;
-              console.log("shade: ", shade);
+              let growth =
+                trefleResults.main_species.specifications.growth_period;
               axios
-                .post("/updategarden", { columnId, shade, moisture, drought })
+                .post("/updategarden", {
+                  columnId,
+                  shade,
+                  moisture,
+                  drought,
+                  bloom,
+                  growth
+                })
                 .then(updategarden => {
                   console.log("updategarden results: ", updategarden);
                 })

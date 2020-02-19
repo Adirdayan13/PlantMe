@@ -28,17 +28,18 @@ exports.addGarden = function(user_id, picture, name) {
 exports.getGarden = function(user_id) {
   return db
     .query(
-      `SELECT id, picture, name, shade, drought, moisture, created_at FROM garden WHERE user_id = $1`,
+      `SELECT id, picture, name, shade, drought, moisture, bloom, growth, created_at FROM garden
+      WHERE user_id = $1 ORDER BY id DESC`,
       [user_id]
     )
     .then(({ rows }) => rows);
 };
 
-exports.updateGarden = function(id, shade, drought, moisture) {
+exports.updateGarden = function(id, shade, drought, moisture, bloom, growth) {
   return db.query(
-    `UPDATE garden SET shade = $2, drought = $3, moisture = $4
+    `UPDATE garden SET shade = $2, drought = $3, moisture = $4, bloom = $5, growth = $6
     WHERE id = $1`,
-    [id, shade, drought, moisture]
+    [id, shade, drought, moisture, bloom, growth]
   );
 };
 
