@@ -13,6 +13,23 @@ export default class Showmore extends React.Component {
       <div className="showmore">
         {trefleResults && (
           <>
+            <div className="love">
+              {trefleResults.main_species.growth.shade_tolerance ==
+                "Intolerant" && (
+                <>
+                  <p>I love</p>
+                  <br />
+                  <img style={{ width: "40px" }} src="/sun.svg" />
+                </>
+              )}
+              {trefleResults.main_species.growth.moisture_use == "High" && (
+                <img style={{ width: "40px" }} src="/humidity.svg" />
+              )}
+              {trefleResults.main_species.growth.drought_tolerance && (
+                <img style={{ width: "40px" }} src="/drought.svg" />
+              )}
+            </div>
+
             <div className="names">
               <p style={{ textDecoration: "underline" }}>Names:</p>
               <br />
@@ -130,6 +147,7 @@ export default class Showmore extends React.Component {
                   {trefleResults.main_species.growth.shade_tolerance}
                 </p>
               )}
+
               {trefleResults.main_species.growth.salinity_tolerance && (
                 <p>
                   Salinity tolerance:{" "}
@@ -219,7 +237,8 @@ export default class Showmore extends React.Component {
                   </p>
                 </>
               )}
-              {trefleResults.main_species.growth.planting_density_minimum && (
+              {trefleResults.main_species.growth.planting_density_minimum
+                .sqm && (
                 <p>
                   Planting density minimum:
                   <br />
@@ -233,7 +252,8 @@ export default class Showmore extends React.Component {
                   acre
                 </p>
               )}
-              {trefleResults.main_species.growth.planting_density_maximum && (
+              {trefleResults.main_species.growth.planting_density_maximum
+                .sqm && (
                 <p>
                   Planting density minimum:
                   <br />

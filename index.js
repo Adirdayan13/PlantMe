@@ -206,41 +206,30 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
     res.redirect("/welome");
   }
 
-  // console.log("req.file: ", req.file);
-  // console.log("path: ", req.file.path);
-  // console.log("filePathLocal: ", filePathLocal);
   var filePathLocal = req.file.path;
   (filePath = filePathLocal),
     (formData = {
       image: fs.createReadStream(filePath)
     });
+
   let file = formData.image.path;
   allResults = [];
 
   const p1 = await new Promise((resolve, reject) => {
     googleAPI(file).then(results => {
-      let firstResultsFromGoogle = results[0].description;
       allResults.push(results);
-      // console.log("results from googleVision: ", results);
-      console.log("firstResultsFromGoogle: ", firstResultsFromGoogle);
-      // const getTrefle = await getTrefle(firstResultsFromGoogle);
-      // console.log("get trefle results from googleAPI: ", getTrefle);
-      if (firstResultsFromGoogle == "tomato") {
-        resolve("garden tomato");
-      }
+      let firstResultsFromGoogle = results[0].description;
+      let secondResultsFromGoogle = results[1].description;
       if (!firstResultsFromGoogle == "") {
         resolve(firstResultsFromGoogle);
       } else {
-        let secondResultsFromGoogle = results[1].description;
         resolve(secondResultsFromGoogle);
       }
     });
   });
 
   function getTrefle(firstResultsFromGoogle) {
-    // console.log("firstResult: ", firstResult);
     return new Promise((resolve, reject) => {
-      // console.log("firstResultsFromGoogle: ", firstResult);
       let body = "";
       https.get(
         `https://trefle.io/api/plants?q=${firstResultsFromGoogle}&complete_data=true&token=${trfleToken}`,
@@ -330,50 +319,29 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
   async function fetch() {
     try {
       let google = await p1;
-      console.log("google before assignment: ", google);
       if (google == "Vermont") {
         google = "Common sunflower";
       }
       if (google.includes("lavender")) {
         google = "lavender thrift";
       }
-      console.log("google after assignment: ", google);
-      const trefle = await getTrefle(google);
-      // console.log("JSON.parse(plants)", JSON.parse(plants));
-      // console.log("trefle: ", trefle);
 
+      const trefle = await getTrefle(google);
+      console.log("trefle: ", trefle);
       const trefleLinks = trefle[1].map(trefle => trefle.link);
-      // console.log("trefleLinks: ", trefleLinks);
-      // const urls = imageUrls.reduce(function(array, url) {
-      //   url = url.replace("http", "https");
-      //   console.log("url: ", url);
-      //   // console.log("array: ", array);
-      //   array.push(getImage(url));
-      //   // console.log("array: ", array);
-      //   return array;
-      // }, []);
-      // console.log("urls[0]: ", urls[0]);
-      // // console.log("plants: ", plants);
+      console.log("trefleLinks: ", trefleLinks);
       if (trefleLinks.length > 0) {
         console.log("there is results from trufle");
         const promises = await Promise.all([
           getImage(trefleLinks[0].replace("http", "https"))
         ]);
-        // console.log("promises: ", promises);
 
         let trefleItems = promises.forEach((item, i) => {
-          // console.log("plants[1][i]: ", plants[1][i]);
           if (item != "") {
-            // console.log("item from trefleItems: ", item);
-            // console.log("plants from fetch: ", plants);
             allResults.push(item);
           }
-          // console.log("plants[i]: ", plants[i]);
         });
       }
-      // console.log("allResults: ", allResults);
-      // console.log("trefle: ", trefle);
-      // console.log("allResults from fetch: ", allResults);
       res.json(allResults);
     } catch (err) {
       console.log("err from try: ", err);

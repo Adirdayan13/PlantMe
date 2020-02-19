@@ -18,6 +18,11 @@ html {
   font-family: "orange";
 }
 
+@font-face {
+  src: url("CreteRound-Regular.ttf");
+  font-family: "crete";
+}
+
 body,
 .main {
   width: 100%;
@@ -47,6 +52,7 @@ button {
   align-items: center;
   font-family: orange;
   font-size: 60px;
+  justify-content: space-between;
 }
 
 .logo-and-text {
@@ -87,6 +93,8 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+  font-family: crete;
 }
 
 .result,
@@ -116,7 +124,8 @@ button {
 .growth,
 .seed,
 .additional-pictures,
-.foliage-and-flower {
+.foliage-and-flower,
+.love {
   border: 1px solid black;
   border-radius: 20px;
   padding: 10px;
@@ -136,23 +145,14 @@ button {
   text-align: center;
 }
 
-.small-logo {
-  width: 50px;
-  position: absolute;
-  left: 2%;
-  top: 2%;
-  transform: translate(-2%, -2%);
-}
-
 .plant-img {
   width: 40%;
   margin-top: 30px;
 }
 
-.upload-logo {
+.upload-logo,
+.small-logo {
   width: 50px;
-  transform: translate(-98%, 1%);
-  position: absolute;
-  left: 98%;
-  top: 1%;
+  display: flex;
+  margin: 5px;
 }
