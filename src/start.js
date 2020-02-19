@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Welcome from "./welcome";
+import Guest from "./guest";
 import App from "./app";
 
 import { Provider } from "react-redux";
@@ -16,7 +17,9 @@ const store = createStore(
 
 let elem;
 
-if (location.pathname == "/welcome") {
+if (location.pathname == "/guestlog") {
+  elem = <Guest />;
+} else if (location.pathname == "/welcome") {
   elem = <Welcome />;
 } else {
   elem = (

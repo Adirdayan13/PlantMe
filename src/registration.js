@@ -42,6 +42,17 @@ export default class Registration extends React.Component {
         });
       });
   }
+  guest(e) {
+    e.preventDefault();
+    axios
+      .post("/guest")
+      .then(results => {
+        if (results.data.guest) {
+          location.replace("/guestlog");
+        }
+      })
+      .catch(err => console.log("error from guest:", err));
+  }
 
   render() {
     return (
@@ -87,6 +98,7 @@ export default class Registration extends React.Component {
           </button>
           <br></br>
           <Link to="/login">Click here to Log in!</Link>
+          <p onClick={e => this.guest(e)}>Click here to log in as a guest!</p>
         </div>
       </div>
     );

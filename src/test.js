@@ -45,7 +45,10 @@ export default class Test extends React.Component {
     formData.append("file", this.state.file);
     formData.append("plantName", this.state.plantName);
 
-    console.log("this.stae: ", this.state);
+    if (!this.state.file) {
+      this.setState({ error: true, showgif: false });
+      return;
+    }
 
     axios
       .post("/garden", formData)
@@ -161,6 +164,12 @@ export default class Test extends React.Component {
             )}
           </>
         )}
+        {this.state.error && (
+          <>
+            <img src="/wrong.gif" />
+            <p className="error">Something went wrong, please try again.</p>
+          </>
+        )}
         {this.state.noResults && (
           <div className="no-results">
             <br /> <br />
@@ -194,6 +203,9 @@ export default class Test extends React.Component {
                           />
                         )}
                       </>
+                    )}
+                    {result.images.length == 0 && (
+                      <img className="result-img" src="/default-flower.svg" />
                     )}
                   </>
                 )}

@@ -43,10 +43,8 @@ exports.updateGarden = function(id, shade, drought, moisture, bloom, growth) {
   );
 };
 
-// exports.updateImage = function(email, picture_url) {
-//   return db.query(
-//     `UPDATE users SET picture_url = $2
-//         WHERE email = $1`,
-//     [email, picture_url]
-//   );
-// };
+exports.addGuest = function(guest) {
+  return db
+    .query(`INSERT INTO guests (guest) VALUES ($1) RETURNING id`, [guest])
+    .then(({ rows }) => rows);
+};

@@ -5,6 +5,7 @@ import Test from "./test";
 import Test2 from "./test2";
 import Garden from "./garden";
 import Showmore from "./showmore";
+import Guest from "./guest";
 import Webcam from "react-webcam";
 const WebcamComponent = () => <Webcam />;
 import { Link } from "react-router-dom";
@@ -53,10 +54,6 @@ export default class App extends React.Component {
             render={() => (
               <Test passState={trefle => this.setState({ trefle })} />
             )}
-          />
-          <Route
-            path="/garden"
-            render={() => <Garden trefle={this.state.trefle} />}
           />
         </BrowserRouter>
       </div>

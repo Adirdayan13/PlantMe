@@ -47,12 +47,13 @@ button {
   background-color: #8bc34a;
   text-align: center;
   font-size: 40px;
-  display: flex;
-  justify-content: center;
+  justify-content: baseline;
   align-items: center;
   font-family: orange;
   font-size: 60px;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 50px auto 50px 50px;
+  grid-template-rows: auto;
 }
 
 .logo-and-text {
@@ -165,7 +166,6 @@ button {
 .garden-logo {
   width: 50px;
   display: flex;
-  margin: 5px;
 }
 
 .small-logos {
@@ -205,4 +205,73 @@ button {
   border-radius: 20px;
   margin: 10px;
   box-shadow: 5px 5px 10px 1px black;
+}
+
+.error {
+  color: black;
+  animation-name: angry-animation;
+  animation-duration: 2s;
+  animation-timing-function: linear;
+  /* animation-delay: 0s; */
+  /* animation-iteration-count: 1; */
+  /* animation-direction: normal; */
+  text-align: center;
+}
+
+@keyframes angry-animation {
+  0% {
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+  }
+  5% {
+    -webkit-transform: translateX(-10px);
+    -ms-transform: translateX(-10px);
+    transform: translateX(-10px);
+  }
+  10% {
+    -webkit-transform: translateX(10px);
+    -ms-transform: translateX(10px);
+    transform: translateX(10px);
+  }
+  15% {
+    -webkit-transform: translateX(-10px);
+    -ms-transform: translateX(-10px);
+    transform: translateX(-10px);
+  }
+  20% {
+    -webkit-transform: translateX(10px);
+    -ms-transform: translateX(10px);
+    transform: translateX(10px);
+  }
+  25% {
+    -webkit-transform: translateX(-10px);
+    -ms-transform: translateX(-10px);
+    transform: translateX(-10px);
+  }
+  30% {
+    -webkit-transform: translateX(10px);
+    -ms-transform: translateX(10px);
+    transform: translateX(10px);
+  }
+  35% {
+    -webkit-transform: translateX(-10px);
+    -ms-transform: translateX(-10px);
+    transform: translateX(-10px);
+  }
+  40% {
+    -webkit-transform: translateX(10px);
+    -ms-transform: translateX(10px);
+    transform: translateX(10px);
+  }
+  45% {
+    -webkit-transform: translateX(-10px);
+    -ms-transform: translateX(-10px);
+    transform: translateX(-10px);
+  }
+  50% {
+    -webkit-transform: translateX(0);
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+  }
 }

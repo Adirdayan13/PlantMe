@@ -84,7 +84,7 @@ const diskStorage = multer.diskStorage({
 const uploader = multer({
   storage: diskStorage,
   limits: {
-    fileSize: 2097152
+    fileSize: 10097152
   }
 });
 
@@ -122,6 +122,8 @@ app.get("/welcome", function(req, res) {
   console.log("*************************** GET WELCOME");
   if (req.session.userId) {
     res.redirect("/");
+  } else if (req.session.guest) {
+    res.redirect("/guestlog");
   } else {
     res.sendFile(__dirname + "/index.html");
   }
@@ -197,12 +199,37 @@ app.post("/login", function(req, res) {
     });
 });
 
+app.post("/guest", (req, res) => {
+  db.addGuest("guest")
+    .then(results => {
+      req.session.guest = results[0].id;
+      console.log("results from guest: ", results[0].id);
+      console.log("req.session: ", req.session);
+      res.json({ guest: true });
+    })
+    .catch(err => console.log("error from add guest: ", err));
+});
+
+app.get("/guestlog", (req, res) => {
+  if (req.session.guest) {
+    res.sendFile(__dirname + "/index.html");
+  } else {
+    res.redirect("/");
+  }
+});
+
 //// APIS ////
 
 app.post("/garden", uploader.single("file"), s3.upload, (req, res) => {
   console.log("*************************** POST garden");
+  if (!req.session.userId) {
+    res.redirect("/welome");
+  }
   let userId = req.session.userId;
   let plantName = req.body.plantName;
+  if (plantName == "undefined") {
+    plantName = "My plant";
+  }
   const imageUrl = s3Url + req.file.filename;
   console.log("req.body: ", req.body);
   console.log("req.file: ", req.file);
@@ -219,6 +246,9 @@ app.post("/garden", uploader.single("file"), s3.upload, (req, res) => {
 });
 
 app.post("/updategarden", (req, res) => {
+  if (!req.session.userId) {
+    res.redirect("/welome");
+  }
   console.log("req.body from updategarden: ", req.body);
   let userId = req.session.userId;
   let columnId = req.body.columnId;
@@ -238,10 +268,13 @@ app.post("/updategarden", (req, res) => {
 });
 
 app.get("/garden.json", (req, res) => {
+  if (!req.session.userId) {
+    res.redirect("/welome");
+  }
   let userId = req.session.userId;
   db.getGarden(userId)
     .then(results => {
-      console.log("results from GET garden: ", results);
+      // console.log("results from GET garden: ", results);
       res.json(results);
     })
     .catch(err => {
@@ -346,6 +379,9 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
         google = "Common sunflower";
       }
       if (google.includes("lavender")) {
+        google = "lavender thrift";
+      }
+      if (google.includes("Perfume")) {
         google = "lavender thrift";
       }
       const trefle = await getTrefle(google);
