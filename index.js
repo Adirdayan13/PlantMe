@@ -25,7 +25,6 @@ const apiSecret = secret.apiSecret;
 const trfleToken = secret.trefleToken;
 const googlePhotosCliendId = secret.googlePhotosCliendId;
 const googlePhotosSecret = secret.googlePhotosSecret;
-const bingKey = secret.bingKey;
 let allResults;
 const vision = require("@google-cloud/vision");
 let imageUrl;
@@ -200,6 +199,37 @@ app.post("/login", function(req, res) {
 
 //// APIS ////
 
+app.post("/garden", uploader.single("file"), s3.upload, (req, res) => {
+  console.log("*************************** POST garden");
+  let userId = req.session.userId;
+  let plantName = req.body.plantName;
+  const imageUrl = s3Url + req.file.filename;
+  console.log("req.body: ", req.body);
+  console.log("req.file: ", req.file);
+  if (req.file) {
+    db.addGarden(userId, imageUrl, plantName)
+      .then(function() {
+        res.json(imageUrl);
+      })
+      .catch(function(err) {
+        console.log("error from POST upload :", err);
+        res.sendStatus(500);
+      });
+  }
+});
+
+app.get("/garden.json", (req, res) => {
+  let userId = req.session.userId;
+  db.getGarden(userId)
+    .then(results => {
+      console.log("results from GET garden: ", results);
+      res.json(results);
+    })
+    .catch(err => {
+      console.log("error from GET garden: ", err);
+    });
+});
+
 app.post("/upload", uploader.single("file"), async (req, res) => {
   console.log("**************************  upload POST");
   if (!req.session.userId) {
@@ -349,52 +379,6 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
   }
 
   return fetch();
-});
-
-app.post("/result/:bing", async (req, res) => {
-  let bingSearchDynamic = req.params.bing + " plant";
-  console.log("bingSearchDynamic: ", bingSearchDynamic);
-
-  // BING SEARCH //
-  let subscriptionKey = `${bingKey}`;
-  let host = "api.cognitive.microsoft.com";
-  let path =
-    "/bing/v7.0/images/search?q=" + encodeURIComponent(bingSearchDynamic);
-  // let term = "tropical ocean";
-
-  // console.log("path: ", path);
-  // BING SEARCH //
-  let request_params = {
-    method: "GET",
-    hostname: host,
-    path: path,
-    headers: {
-      "Ocp-Apim-Subscription-Key": subscriptionKey
-    }
-  };
-
-  let response_handler = async function(response) {
-    let body = "";
-    response.on("data", function(d) {
-      body += d;
-    });
-    response.on("end", function() {
-      // console.log(`Image result count: ${body.value.length}`);
-      // console.log(`First image thumbnail url: ${body.thumbnailUrl}`);
-      // console.log(`First image web search url: ${body.webSearchUrl}`);
-      // console.log("parsed body: ", JSON.parse(body).value[0]);
-      let picturesFromBing = JSON.parse(body).value[0].contentUrl;
-      // console.log("allResults[0] - google: ", allResults[0]);
-      // console.log("allresults[1] - trefle: ", allResults[1]);
-      // console.log("picturesFromBing: ", picturesFromBing);
-      // console.log("parsed body from bing: ", JSON.parse(body).value[0]);
-      // allResults.push(picturesFromBing);
-      res.json(picturesFromBing);
-      // res.json(JSON.parse(body).value[0].contentUrl);
-    });
-  };
-  let request = await https.request(request_params, response_handler);
-  request.end();
 });
 
 // app.post("/userchoise/:userchoise", (req, res) => {

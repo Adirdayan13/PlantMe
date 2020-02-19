@@ -134,6 +134,12 @@ button {
   box-shadow: 5px 5px 10px 1px black;
 }
 
+.result-img {
+  border-radius: 40px;
+  box-shadow: 5px 5px 10px 1px black;
+  width: 40%;
+}
+
 .logo-and-text {
   font-family: orange;
   font-size: 30px;
@@ -151,7 +157,8 @@ button {
 }
 
 .upload-logo,
-.small-logo {
+.small-logo,
+.garden-logo {
   width: 50px;
   display: flex;
   margin: 5px;

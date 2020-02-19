@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 export default class Test extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { show: false };
+    this.state = { show: false, showUploader: false };
     this.clickHandler = this.clickHandler.bind(this);
   }
 
@@ -17,6 +17,19 @@ export default class Test extends React.Component {
     this.setState({
       [e.target.name]: e.target.value
     });
+    console.log("this.state from handleChange: ", this.state);
+  }
+
+  handleChangeGarden(e) {
+    e.preventDefault();
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  clickHandlerGarden(e) {
+    e.preventDefault();
+    this.setState({ hideName: true, showUploader: true });
   }
 
   grabFile(e) {
@@ -30,22 +43,33 @@ export default class Test extends React.Component {
     this.setState({ hide: true, showgif: true });
     var formData = new FormData();
     formData.append("file", this.state.file);
+    formData.append("plantName", this.state.plantName);
+
+    console.log("this.stae: ", this.state);
+
     axios
-      .post("/upload", formData)
-      .then(results => {
-        console.log("results from postupload: ", results);
-        let googleResults = results.data[0];
-        let trefleResults = results.data[2];
-        if (results.data[1].length == 0) {
-          this.setState({ noResults: true });
-        }
-        this.setState({ showgif: false });
-        this.setState({ google: googleResults });
-        this.setState({ trefle: [trefleResults] });
+      .post("/garden", formData)
+      .then(() => {
+        axios
+          .post("/upload", formData)
+          .then(results => {
+            console.log("results from postupload: ", results);
+            let googleResults = results.data[0];
+            let trefleResults = results.data[2];
+            if (results.data[1].length == 0) {
+              this.setState({ noResults: true });
+            }
+            this.setState({ showgif: false });
+            this.setState({ google: googleResults });
+            this.setState({ trefle: [trefleResults] });
+          })
+          .catch(err => {
+            console.log("err: ", err);
+            this.setState({ showgif: false });
+          });
       })
       .catch(err => {
-        console.log("err: ", err);
-        this.setState({ showgif: false });
+        console.log("error from garden: ", err);
       });
   }
   showGoogleResults(e) {
@@ -67,22 +91,42 @@ export default class Test extends React.Component {
               try to take a picture without the pot or different items in the
               background
             </h3>
-            <div className="uploader">
-              <br />
-              <br />
-              <h1>Upload your picture</h1>
-              <br />
-              <form>
-                <input
-                  ref={ref => (this.fileInput = ref)}
-                  type="file"
-                  name="file"
-                  id="file"
-                  onChange={e => this.grabFile(e)}
-                />
-              </form>
-              <button onClick={e => this.clickHandler(e)}>Click Me</button>
+            <br />
+            <br />
+            <div className="garden-info">
+              {!this.state.hideName && (
+                <>
+                  <p>Choose name for your plant</p>
+                  <input
+                    onChange={e => this.handleChangeGarden(e)}
+                    type="text"
+                    name="plantName"
+                  />
+                  <br />
+                  <button onClick={e => this.clickHandlerGarden(e)}>
+                    Add name
+                  </button>
+                </>
+              )}
             </div>
+            {this.state.showUploader && (
+              <div className="uploader">
+                <br />
+                <br />
+                <h1>Upload your picture</h1>
+                <br />
+                <form>
+                  <input
+                    ref={ref => (this.fileInput = ref)}
+                    type="file"
+                    name="file"
+                    id="file"
+                    onChange={e => this.grabFile(e)}
+                  />
+                </form>
+                <button onClick={e => this.clickHandler(e)}>Click Me</button>
+              </div>
+            )}
           </>
         )}
         {this.state.noResults && (
@@ -113,7 +157,7 @@ export default class Test extends React.Component {
                       <>
                         {result.images[0].url && (
                           <img
-                            style={{ width: "400px" }}
+                            className="result-img"
                             src={result.images[0].url}
                           />
                         )}

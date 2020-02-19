@@ -3,6 +3,7 @@ import axios from "./axios";
 import { useDispatch, useSelector } from "react-redux";
 import Test from "./test";
 import Test2 from "./test2";
+import Garden from "./garden";
 import Showmore from "./showmore";
 import Webcam from "react-webcam";
 const WebcamComponent = () => <Webcam />;
@@ -24,7 +25,7 @@ export default class App extends React.Component {
   }
 
   imgae() {
-    this.setState({ image: image });
+    this.setState({ image: image, hideAll: false });
   }
 
   render() {
@@ -42,31 +43,12 @@ export default class App extends React.Component {
             <a href="/">
               <img className="upload-logo" src="/upload.svg" />
             </a>
+            <Link to="/garden">
+              <img className="garden-logo" src="/garden.svg" />
+            </Link>
           </header>
-          <Test />
-          <Route
-            exact
-            path="/test"
-            render={() => (
-              <Test editTest={results => this.setState({ data: [results] })} />
-            )}
-          />
-          {this.state.data && (
-            <h1>
-              {this.state.data.map((item, key) => (
-                <div key={key}>{item}</div>
-              ))}
-            </h1>
-          )}
-          <Route
-            exact
-            path="/test2"
-            render={() => (
-              <Test2
-                editTest2={results => this.setState({ data2: [results] })}
-              />
-            )}
-          />
+          <Route path="/garden" component={Garden} />
+          <Route exact path="/" component={Test} />
         </BrowserRouter>
       </div>
     );

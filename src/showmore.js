@@ -5,6 +5,10 @@ export default class Showmore extends React.Component {
     super(props);
     this.state = {};
   }
+  showSunInfo() {
+    console.log("hover");
+    this.setState({ showSunInfo: true });
+  }
   render() {
     console.log("this.props from showmore: ", this.props);
     let trefleResults = this.props.state.trefle[0];
@@ -19,6 +23,7 @@ export default class Showmore extends React.Component {
                 <>
                   <p>I love</p>
                   <br />
+                  {this.state.showSunInfo && <p>I love to be in the sun</p>}
                   <img style={{ width: "40px" }} src="/sun.svg" />
                 </>
               )}
