@@ -5,5 +5,8 @@ CREATE TABLE garden(
     user_id INT NOT NULL REFERENCES users(id),
     picture VARCHAR(300),
     name VARCHAR(100),
+    shade VARCHAR(50),
+    drought VARCHAR(50),
+    moisture VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

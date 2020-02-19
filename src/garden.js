@@ -9,6 +9,8 @@ export default class Garden extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.showPopUp = this.showPopUp.bind(this);
+    this.removePopUP = this.removePopUP.bind(this);
   }
   componentDidMount() {
     axios
@@ -22,6 +24,13 @@ export default class Garden extends React.Component {
         console.log("error from GET garden: ", err);
       });
   }
+
+  showPopUp() {
+    this.setState({ showHumidPopup: true });
+  }
+  removePopUP() {
+    this.setState({ showHumidPopup: false });
+  }
   render() {
     console.log("this.props. from garden: ", this.props);
     console.log("this.state from garden: ", this.state);
@@ -31,19 +40,30 @@ export default class Garden extends React.Component {
           <>
             {this.state.myGarden.map((plant, item) => (
               <div key={item} className="garden-results">
-                {this.props.tefle && (
-                  <>
-                    {this.props.trefle.main_species.growth.shade_tolerance ==
-                      "Intolerant" && (
-                      <>
-                        <br />
-                        <img style={{ width: "400px" }} src="/sun.svg" />
-                      </>
-                    )}
-                    )}
-                  </>
-                )}
                 <p>{plant.name}</p>
+                <div className="small-logos">
+                  {this.state.showHumidPopup && (
+                    <div className="humidPopup">
+                      <p>I love humid !</p>
+                    </div>
+                  )}
+                  {plant.shade == "Intolerant" && (
+                    <img style={{ width: "40px" }} src="/sun.svg" />
+                  )}
+                  {plant.drought == "Medium" && (
+                    <img style={{ width: "40px" }} src="/drought.svg" />
+                  )}
+                  {plant.moisture == "Medium" && (
+                    <>
+                      <img
+                        onMouseEnter={this.showPopUp}
+                        onMouseLeave={this.removePopUP}
+                        style={{ width: "40px" }}
+                        src="/humidity.svg"
+                      />
+                    </>
+                  )}
+                </div>
                 <img
                   style={{
                     width: "300px",

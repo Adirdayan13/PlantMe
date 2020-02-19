@@ -49,7 +49,9 @@ export default class Test extends React.Component {
 
     axios
       .post("/garden", formData)
-      .then(() => {
+      .then(rowId => {
+        let columnId = rowId.data[0].id;
+        console.log("rowId: ", rowId);
         axios
           .post("/upload", formData)
           .then(results => {
@@ -58,6 +60,24 @@ export default class Test extends React.Component {
             let trefleResults = results.data[2];
             if (results.data[1].length == 0) {
               this.setState({ noResults: true });
+            }
+            if (
+              trefleResults.main_species.growth.shade_tolerance ||
+              trefleResults.main_species.growth.moisture_use ||
+              trefleResults.main_species.growth.drought_tolerance
+            ) {
+              let drought = trefleResults.main_species.growth.drought_tolerance;
+              let moisture = trefleResults.main_species.growth.moisture_use;
+              let shade = trefleResults.main_species.growth.shade_tolerance;
+              console.log("shade: ", shade);
+              axios
+                .post("/updategarden", { columnId, shade, moisture, drought })
+                .then(updategarden => {
+                  console.log("updategarden results: ", updategarden);
+                })
+                .catch(err => {
+                  console.log("error from updategarden: ", err);
+                });
             }
             this.props.passState(trefleResults);
             this.setState({ showgif: false });

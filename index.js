@@ -208,14 +208,31 @@ app.post("/garden", uploader.single("file"), s3.upload, (req, res) => {
   console.log("req.file: ", req.file);
   if (req.file) {
     db.addGarden(userId, imageUrl, plantName)
-      .then(function() {
-        res.json(imageUrl);
+      .then(results => {
+        res.json(results.rows);
       })
       .catch(function(err) {
         console.log("error from POST upload :", err);
         res.sendStatus(500);
       });
   }
+});
+
+app.post("/updategarden", (req, res) => {
+  console.log("req.body from updategarden: ", req.body);
+  let userId = req.session.userId;
+  let shade = req.body.shade;
+  let drought = req.body.drought;
+  let moisture = req.body.moisture;
+  let columnId = req.body.columnId;
+  db.updateGarden(columnId, shade, drought, moisture)
+    .then(results => {
+      console.log("results from update garden: ", results);
+      res.json(results);
+    })
+    .catch(err => {
+      console.log("error from update garden: ", err);
+    });
 });
 
 app.get("/garden.json", (req, res) => {
@@ -349,7 +366,7 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
   async function fetch() {
     try {
       let google = await p1;
-      if (google == "Vermont") {
+      if (google == "Vermont" || "Krystal Ann Photography") {
         google = "Common sunflower";
       }
       if (google.includes("lavender")) {
@@ -357,7 +374,7 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
       }
 
       const trefle = await getTrefle(google);
-      console.log("trefle: ", trefle);
+      // console.log("trefle: ", trefle);
       const trefleLinks = trefle[1].map(trefle => trefle.link);
       console.log("trefleLinks: ", trefleLinks);
       if (trefleLinks.length > 0) {

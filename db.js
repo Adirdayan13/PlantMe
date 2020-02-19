@@ -20,15 +20,32 @@ exports.getUser = function(email) {
 exports.addGarden = function(user_id, picture, name) {
   return db.query(
     `INSERT INTO garden (user_id, picture, name)
-        VALUES ($1, $2, $3) RETURNING *`,
+        VALUES ($1, $2, $3) RETURNING id, user_id, picture, name`,
     [user_id, picture, name]
   );
 };
 
 exports.getGarden = function(user_id) {
   return db
-    .query(`SELECT picture, name, created_at FROM garden WHERE user_id = $1`, [
-      user_id
-    ])
+    .query(
+      `SELECT id, picture, name, shade, drought, moisture, created_at FROM garden WHERE user_id = $1`,
+      [user_id]
+    )
     .then(({ rows }) => rows);
 };
+
+exports.updateGarden = function(id, shade, drought, moisture) {
+  return db.query(
+    `UPDATE garden SET shade = $2, drought = $3, moisture = $4
+    WHERE id = $1`,
+    [id, shade, drought, moisture]
+  );
+};
+
+// exports.updateImage = function(email, picture_url) {
+//   return db.query(
+//     `UPDATE users SET picture_url = $2
+//         WHERE email = $1`,
+//     [email, picture_url]
+//   );
+// };

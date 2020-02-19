@@ -29,9 +29,8 @@ export default class Showmore extends React.Component {
               {trefleResults.main_species.growth.moisture_use == "High" && (
                 <img style={{ width: "40px" }} src="/humidity.svg" />
               )}
-              {trefleResults.main_species.growth.drought_tolerance && (
-                <img style={{ width: "40px" }} src="/drought.svg" />
-              )}
+              {trefleResults.main_species.growth.drought_tolerance ==
+                "High" && <img style={{ width: "40px" }} src="/drought.svg" />}
             </div>
 
             <div className="names">
