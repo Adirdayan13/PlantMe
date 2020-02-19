@@ -18,12 +18,11 @@ export default class Showmore extends React.Component {
         {trefleResults && (
           <>
             <div className="love">
+              <p>I love</p>
               {trefleResults.main_species.growth.shade_tolerance ==
                 "Intolerant" && (
                 <>
-                  <p>I love</p>
                   <br />
-                  {this.state.showSunInfo && <p>I love to be in the sun</p>}
                   <img style={{ width: "40px" }} src="/sun.svg" />
                 </>
               )}

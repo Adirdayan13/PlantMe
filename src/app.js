@@ -32,7 +32,7 @@ export default class App extends React.Component {
     // if (!this.state.id) {
     //   return "Loading...";
     // }
-    console.log("this.state from app render: ", this.state.data);
+    console.log("this.state from app render: ", this.state);
 
     return (
       <div className="app">
@@ -47,8 +47,17 @@ export default class App extends React.Component {
               <img className="garden-logo" src="/garden.svg" />
             </Link>
           </header>
-          <Route path="/garden" component={Garden} />
-          <Route exact path="/" component={Test} />
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <Test passState={trefle => this.setState({ trefle })} />
+            )}
+          />
+          <Route
+            path="/garden"
+            render={() => <Garden trefle={this.state.trefle} />}
+          />
         </BrowserRouter>
       </div>
     );

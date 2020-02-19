@@ -23,12 +23,26 @@ export default class Garden extends React.Component {
       });
   }
   render() {
+    console.log("this.props. from garden: ", this.props);
+    console.log("this.state from garden: ", this.state);
     return (
       <div className="garden-div">
         {this.state.myGarden && (
           <>
             {this.state.myGarden.map((plant, item) => (
               <div key={item} className="garden-results">
+                {this.props.tefle && (
+                  <>
+                    {this.props.trefle.main_species.growth.shade_tolerance ==
+                      "Intolerant" && (
+                      <>
+                        <br />
+                        <img style={{ width: "400px" }} src="/sun.svg" />
+                      </>
+                    )}
+                    )}
+                  </>
+                )}
                 <p>{plant.name}</p>
                 <img
                   style={{

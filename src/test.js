@@ -59,6 +59,7 @@ export default class Test extends React.Component {
             if (results.data[1].length == 0) {
               this.setState({ noResults: true });
             }
+            this.props.passState(trefleResults);
             this.setState({ showgif: false });
             this.setState({ google: googleResults });
             this.setState({ trefle: [trefleResults] });
