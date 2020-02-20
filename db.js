@@ -35,12 +35,22 @@ exports.getGarden = function(user_id) {
     .then(({ rows }) => rows);
 };
 
+exports.deleteGarden = function(id) {
+  return db.query(`DELETE FROM garden WHERE id = $1`, [id]);
+};
+
 exports.updateGarden = function(id, shade, drought, moisture, bloom, growth) {
   return db.query(
     `UPDATE garden SET shade = $2, drought = $3, moisture = $4, bloom = $5, growth = $6
     WHERE id = $1`,
     [id, shade, drought, moisture, bloom, growth]
   );
+};
+
+exports.updateGardenName = function(id, name) {
+  return db
+    .query(`UPDATE garden SET name = $2 WHERE id = $1 RETURNING *`, [id, name])
+    .then(({ rows }) => rows);
 };
 
 exports.addGuest = function(guest) {

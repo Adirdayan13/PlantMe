@@ -52,8 +52,23 @@ button {
   font-family: orange;
   font-size: 60px;
   display: grid;
-  grid-template-columns: 50px auto 50px 50px;
+  grid-template-columns: 12% 12% 12% auto 12% 12% 12%;
   grid-template-rows: auto;
+}
+
+.info-header,
+.garden-header,
+.upload-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid green;
+  padding-right: 5px;
+  padding-left: 5px;
+  font-family: crete;
+  color: black;
+  font-size: 15px;
 }
 
 .logo-and-text {
@@ -161,11 +176,38 @@ button {
   margin-top: 30px;
 }
 
+.editplantname {
+  display: flex;
+  flex-direction: column;
+  transform: translate(0px, -20px);
+  align-items: center;
+  width: 50%;
+}
+
 .upload-logo,
 .small-logo,
-.garden-logo {
+.garden-logo,
+.info-logo {
   width: 50px;
   display: flex;
+  margin-left: 5px;
+}
+
+.plant-name-input {
+  text-align: center;
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: orange;
+  font-size: 25px;
+  width: 100%;
+}
+
+.garden-info,
+.uploader {
+  border: 1px solid black;
+  padding: 15px;
+  border-radius: 20px;
+  margin-top: 50px;
 }
 
 .small-logos {
@@ -205,6 +247,12 @@ button {
   border-radius: 20px;
   margin: 10px;
   box-shadow: 5px 5px 10px 1px black;
+}
+
+.edit-delete {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .error {

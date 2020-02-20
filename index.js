@@ -245,6 +245,18 @@ app.post("/garden", uploader.single("file"), s3.upload, (req, res) => {
   }
 });
 
+app.post("/updategardenname", (req, res) => {
+  console.log("req.body: ", req.body);
+  let id = req.body.plantId;
+  let name = req.body.plantName;
+  db.updateGardenName(id, name)
+    .then(results => {
+      console.log("results from updategardenname");
+      res.json({ edited: true });
+    })
+    .catch(err => console.log("error from update name: ", err));
+});
+
 app.post("/updategarden", (req, res) => {
   if (!req.session.userId) {
     res.redirect("/welome");
@@ -265,6 +277,16 @@ app.post("/updategarden", (req, res) => {
     .catch(err => {
       console.log("error from update garden: ", err);
     });
+});
+
+app.post("/deleteGarden", (req, res) => {
+  console.log("req.body from deleteGarden: ", req.body);
+  let id = req.body.plantId;
+  db.deleteGarden(id)
+    .then(results => {
+      res.json({ deleted: true });
+    })
+    .catch(err => console.log("err from delete garden: ", err));
 });
 
 app.get("/garden.json", (req, res) => {

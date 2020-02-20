@@ -6,6 +6,7 @@ import Test2 from "./test2";
 import Garden from "./garden";
 import Showmore from "./showmore";
 import Guest from "./guest";
+import Info from "./info";
 import Webcam from "react-webcam";
 const WebcamComponent = () => <Webcam />;
 import { Link } from "react-router-dom";
@@ -40,13 +41,29 @@ export default class App extends React.Component {
         <BrowserRouter>
           <header className="header">
             <img className="small-logo" src="/planet-earth.svg" />
+            <p></p>
+            <p></p>
             <p>PlantMe</p>
-            <a href="/">
-              <img className="upload-logo" src="/upload.svg" />
-            </a>
-            <Link to="/garden">
-              <img className="garden-logo" src="/garden.svg" />
-            </Link>
+            <div>
+              <a className="upload-header" href="/">
+                <p className="upload-header-p" style={{ marginRight: "5px" }}>
+                  Upload
+                </p>
+                <img className="upload-logo" src="/upload.svg" />
+              </a>
+            </div>
+            <div>
+              <Link className="garden-header" to="/garden">
+                <p style={{ marginRight: "5px" }}>My Garden</p>
+                <img className="garden-logo" src="/garden.svg" />
+              </Link>
+            </div>
+            <div>
+              <Link className="info-header" to="/info">
+                <p style={{ marginRight: "5px" }}>Info</p>
+                <img className="info-logo" src="/info.svg" />
+              </Link>
+            </div>
           </header>
           <Route
             exact
@@ -55,8 +72,21 @@ export default class App extends React.Component {
               <Test passState={trefle => this.setState({ trefle })} />
             )}
           />
+          <Route
+            path="/garden"
+            render={() => <Garden trefle={this.state.trefle} />}
+          />
+          <Route exact path="/info" render={() => <Info />} />
         </BrowserRouter>
       </div>
     );
   }
 }
+
+// <Route
+// exact
+// path="/guest"
+// render={() => (
+//     <Guest passState={trefle => this.setState({ trefle })} />
+// )}
+// />

@@ -118,20 +118,20 @@ export default class Test extends React.Component {
         {!this.state.hide && (
           <>
             <br />
-            <h1>How to get the most accurate results ?</h1>
+            <h1>How to get the most accurate results?</h1>
             <br />
             <h3>
-              You should take a clear picture of your Plant, Flower, Weed,
+              You should take a clear picture of your Plant, Flower, Weed.
               <br />
-              try to take a picture without the pot or different items in the
-              background
+              Try to take a picture without the pot or different items in the
+              background.
             </h3>
             <br />
             <br />
-            <div className="garden-info">
-              {!this.state.hideName && (
+            {!this.state.hideName && (
+              <div className="garden-info">
                 <>
-                  <p>Choose name for your plant</p>
+                  <p>Choose a name for your plant</p>
                   <input
                     onChange={e => this.handleChangeGarden(e)}
                     type="text"
@@ -142,12 +142,10 @@ export default class Test extends React.Component {
                     Add name
                   </button>
                 </>
-              )}
-            </div>
+              </div>
+            )}
             {this.state.showUploader && (
               <div className="uploader">
-                <br />
-                <br />
                 <h1>Upload your picture</h1>
                 <br />
                 <form>

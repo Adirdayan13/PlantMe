@@ -1,0 +1,8 @@
+@media screen and (max-height: 480px) {
+  html {
+    background-color: white;
+  }
+  .info-header {
+    visibility: hidden;
+  }
+}

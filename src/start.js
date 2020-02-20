@@ -17,9 +17,10 @@ const store = createStore(
 
 let elem;
 
-if (location.pathname == "/guestlog") {
-  elem = <Guest />;
-} else if (location.pathname == "/welcome") {
+// if (location.pathname == "/guestlog") {
+//   elem = <Guest />;
+// } else
+if (location.pathname == "/welcome") {
   elem = <Welcome />;
 } else {
   elem = (
