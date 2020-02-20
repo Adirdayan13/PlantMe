@@ -14,7 +14,7 @@ export default function Login() {
       <div className="logo-and-text">
         <h1>Welcome to PlantMe</h1>
         <br />
-        <h2>Identify Plant, Flower, Weed and more</h2>
+        <h2>Identify Plant, Flower, Weed and more with picture</h2>
         <img className="plant-img" src={"/plant.svg"} />
       </div>
       <div className="login-inputs">

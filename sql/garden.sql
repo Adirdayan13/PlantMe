@@ -10,5 +10,6 @@ CREATE TABLE garden(
     moisture VARCHAR(50),
     bloom VARCHAR(50),
     growth VARCHAR(50),
+    common_name VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

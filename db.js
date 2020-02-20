@@ -28,7 +28,7 @@ exports.addGarden = function(user_id, picture, name) {
 exports.getGarden = function(user_id) {
   return db
     .query(
-      `SELECT id, picture, name, shade, drought, moisture, bloom, growth, created_at FROM garden
+      `SELECT id, picture, name, shade, drought, moisture, bloom, growth, common_name, created_at FROM garden
       WHERE user_id = $1 ORDER BY id DESC`,
       [user_id]
     )
@@ -39,11 +39,19 @@ exports.deleteGarden = function(id) {
   return db.query(`DELETE FROM garden WHERE id = $1`, [id]);
 };
 
-exports.updateGarden = function(id, shade, drought, moisture, bloom, growth) {
+exports.updateGarden = function(
+  id,
+  shade,
+  drought,
+  moisture,
+  bloom,
+  growth,
+  common_name
+) {
   return db.query(
-    `UPDATE garden SET shade = $2, drought = $3, moisture = $4, bloom = $5, growth = $6
+    `UPDATE garden SET shade = $2, drought = $3, moisture = $4, bloom = $5, growth = $6, common_name = $7
     WHERE id = $1`,
-    [id, shade, drought, moisture, bloom, growth]
+    [id, shade, drought, moisture, bloom, growth, common_name]
   );
 };
 

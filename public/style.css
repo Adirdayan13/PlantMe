@@ -7,7 +7,7 @@ html {
   background-repeat: no-repeat;
   background-size: cover;
   background-color: green;
-  /* background-image: url(plantbg.jpg); */
+  /* background-image: url(grass.gif); */
   border: 5px solid #8bc34a;
   width: 100%;
   min-height: 100vh;
@@ -34,6 +34,7 @@ input {
   text-align: center;
   margin-bottom: 5px;
   border: 1px solid black;
+  box-shadow: 2px 2px 5px 1px black;
 }
 
 button {
@@ -76,18 +77,36 @@ button {
   flex-direction: column;
   align-items: center;
   height: 100%;
-  margin-top: 50px;
+  font-family: orange;
+  font-size: 30px;
+}
+
+.garden-input:focus {
+  outline: none;
+}
+
+*:focus {
+  outline: none;
 }
 
 .register,
 .login,
+.reset {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+/* .login,
 .reset {
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100%;
   justify-content: flex-end;
-}
+} */
 
 .register-inputs {
   display: flex;
@@ -160,20 +179,8 @@ button {
   width: 40%;
 }
 
-.logo-and-text {
-  font-family: orange;
-  font-size: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  margin-top: 20px;
-  text-align: center;
-}
-
 .plant-img {
-  width: 40%;
-  margin-top: 30px;
+  width: 20%;
 }
 
 .editplantname {
@@ -208,6 +215,24 @@ button {
   padding: 15px;
   border-radius: 20px;
   margin-top: 50px;
+}
+
+.uploader {
+  border: 1px solid black;
+  padding: 15px;
+  border-radius: 20px;
+  margin-top: 50px;
+  box-shadow: 5px 5px 10px 1px black;
+  width: 40%;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.uploader > input {
+  margin-top: 20px;
 }
 
 .small-logos {

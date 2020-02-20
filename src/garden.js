@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 export default class Garden extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { editName: false };
   }
   componentDidMount() {
     console.log("componentDidMount");
@@ -55,6 +55,10 @@ export default class Garden extends React.Component {
     });
   }
 
+  componentDidUpdate() {
+    console.log("updated !! *****************************");
+  }
+
   submit(id) {
     let plantName = this.state.plantName;
     axios
@@ -62,7 +66,17 @@ export default class Garden extends React.Component {
       .then(results => {
         let plantName = this.state.plantName;
         let plantId = this.state.plantId;
-        // this.setState({ myGarden[plantId]: plantName })
+        this.setState({ editName: false });
+        console.log("results from updategarden: ", results);
+        // var newState = this.state.myGarden.map((plant, item) => {
+        //   if (plant.id == plantId) {
+        //     plant.name = plantName;
+        //   }
+        //   return plant;
+        // });
+        // console.log("newState: ", newState);
+        // this.setState({ myGarden: newState });
+        // this.mount();
         location.replace("/garden");
       })
       .catch(err => console.log("error from updateGardenName: ", err));
@@ -76,13 +90,22 @@ export default class Garden extends React.Component {
       })
       .catch(err => console.log("error from deleteGarden: ", err));
   }
+  // common_name(common_name) {
+  //   console.log("common_name: ", common_name);
+  //   axios
+  //     .post("/trefle", { common_name })
+  //     .then(results => {
+  //       console.log("results from trefle: ", results);
+  //     })
+  //     .catch(err => console.log("error from trefle: ", err));
+  // }
 
   render() {
     console.log("this.props. from garden: ", this.props);
     console.log("this.state from garden: ", this.state);
     return (
       <div className="garden-div-wrapper">
-        <p>My garden</p>
+        <p style={{ marginTop: "20px" }}>My garden</p>
         <div className="garden-div">
           {this.state.myGarden && (
             <>
@@ -90,7 +113,7 @@ export default class Garden extends React.Component {
                 <>
                   <br />
                   <br />
-                  <p>
+                  <p style={{ marginTop: "150px" }}>
                     You dont have nothing in your garden yet.
                     <br />
                     Upload your first plant
@@ -107,7 +130,9 @@ export default class Garden extends React.Component {
                     <div key={item} className="garden-results">
                       <div className="edit-delete">
                         <img
-                          onClick={() => this.setState({ plantId: plant.id })}
+                          onClick={() =>
+                            this.setState({ plantId: plant.id, editName: true })
+                          }
                           style={{ width: "20px" }}
                           src="pencil.svg"
                         />
@@ -127,22 +152,27 @@ export default class Garden extends React.Component {
                           <p
                             key={item}
                             style={{ marginBottom: plant.meginBottom }}
-                          >
-                            <input
-                              className="plant-name-input"
-                              name="plantName"
-                              onChange={e => this.handleChange(e)}
-                              defaultValue={plant.name}
-                              type="text"
-                            />
-                          </p>
+                          ></p>
+                        </div>
+                      )}
+                      {this.state.editName && this.state.plantId == plant.id && (
+                        <>
+                          <input
+                            className="garden-input"
+                            autoComplete="off"
+                            className="plant-name-input"
+                            name="plantName"
+                            onChange={e => this.handleChange(e)}
+                            defaultValue={plant.name}
+                            type="text"
+                          />
                           <button
                             style={{ width: "70px" }}
                             onClick={nameAndId => this.submit(plant.id)}
                           >
                             Submit
                           </button>
-                        </div>
+                        </>
                       )}
                       <div className="small-logos">
                         {plant.growth && (
@@ -235,7 +265,6 @@ export default class Garden extends React.Component {
                         }}
                         key={plant.id}
                         src={plant.picture}
-                        onClick={e => this.info(plant.picture)}
                       />
                     </div>
                   ))}

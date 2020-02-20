@@ -74,7 +74,12 @@ export default class App extends React.Component {
           />
           <Route
             path="/garden"
-            render={() => <Garden trefle={this.state.trefle} />}
+            render={() => (
+              <Garden
+                // plantName={plantName => this.setState({ plantName: plantName })}
+                trefle={this.state.trefle}
+              />
+            )}
           />
           <Route exact path="/info" render={() => <Info />} />
         </BrowserRouter>

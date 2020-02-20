@@ -246,13 +246,18 @@ app.post("/garden", uploader.single("file"), s3.upload, (req, res) => {
 });
 
 app.post("/updategardenname", (req, res) => {
-  console.log("req.body: ", req.body);
+  console.log("req.body from update @!: ", req.body);
   let id = req.body.plantId;
   let name = req.body.plantName;
+  if (name == undefined || name == "" || !name) {
+    console.log("we are in if !");
+    name = "My plant";
+  }
+  console.log("name :", name);
   db.updateGardenName(id, name)
     .then(results => {
       console.log("results from updategardenname");
-      res.json({ edited: true });
+      res.json(results);
     })
     .catch(err => console.log("error from update name: ", err));
 });
@@ -263,13 +268,22 @@ app.post("/updategarden", (req, res) => {
   }
   console.log("req.body from updategarden: ", req.body);
   let userId = req.session.userId;
+  let common_name = req.body.common_name;
   let columnId = req.body.columnId;
   let shade = req.body.shade;
   let moisture = req.body.moisture;
   let drought = req.body.drought;
   let bloom = req.body.bloom;
   let growth = req.body.growth;
-  db.updateGarden(columnId, shade, drought, moisture, bloom, growth)
+  db.updateGarden(
+    columnId,
+    shade,
+    drought,
+    moisture,
+    bloom,
+    growth,
+    common_name
+  )
     .then(results => {
       console.log("results from update garden: ", results);
       res.json(results);
@@ -407,6 +421,7 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
         google = "lavender thrift";
       }
       const trefle = await getTrefle(google);
+      // console.log("trefle: ", trefle);
       const trefleLinks = trefle[1].map(trefle => trefle.link);
       if (trefleLinks.length > 0) {
         const promises = await Promise.all([
@@ -452,6 +467,81 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
 //       }
 //     );
 //   });
+// });
+
+// app.post("/trefle", async (req, res) => {
+//   let common_name = req.body.common_name;
+//   console.log("common_name: ", common_name);
+//   function getTrefle(common_name) {
+//     return new Promise((resolve, reject) => {
+//       let body = "";
+//       https.get(
+//         `https://trefle.io/api/plants?q=${common_name}&complete_data=true&token=${trfleToken}`,
+//         res => {
+//           res.on("data", function(chunk) {
+//             body += chunk;
+//           });
+//           res.on("end", function() {
+//             let parsedBody = JSON.parse(body);
+//             // console.log("parsedBody from get trefle: ", parsedBody);
+//             body += parsedBody;
+//             resolve(body);
+//           });
+//         }
+//       );
+//     });
+//   }
+//   var trefleResults = await getTrefle(common_name);
+// console.log("trefleResults: ", trefleResults);
+
+// const trefleLinks = trefleResults.map(trefle => trefle.link);
+// console.log("trefleLinks: ", trefleLinks);
+// if (trefleLinks.length > 0) {
+//   const promises = await Promise.all([
+//     getImage(trefleLinks[0].replace("http", "https"))
+//   ]);
+// }
+// console.log("trefleResults: ", trefleResults);
+// console.log("promises: ", promises);
+// function getImage(url) {
+//   return new Promise((resolve, reject) => {
+//     let host = url.slice(8, 17);
+//     let path = url.replace("https://trefle.io", "");
+//     // console.log("host: ", host);
+//     // console.log("path: ", path);
+//     const options = {
+//       hostname: host,
+//       path: path,
+//       headers: {
+//         Authorization: `Bearer ${trfleToken}`
+//       }
+//     };
+//     let body = "";
+//     // let parsedResults = "";
+//     https
+//       .get(options, res => {
+//         res.on("data", function(chunk) {
+//           body += chunk;
+//           // console.log("body: ", body);
+//         });
+//         res.on("end", function() {
+//           let parsedBody = JSON.parse(body);
+//           // console.log("parsedBody from getImage from trefle: ", parsedBody);
+//           allResults.push(parsedBody);
+//           resolve(JSON.parse(body));
+//         });
+//
+//         if (res.statusCode == 200) {
+//         } else {
+//           console.log("status code not 200");
+//           reject(res.statusMessage);
+//         }
+//       })
+//       .on("error", function(err) {
+//         console.log("err: ", err);
+//       });
+//   });
+// }
 // });
 
 app.get("*", function(req, res) {

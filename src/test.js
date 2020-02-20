@@ -61,6 +61,7 @@ export default class Test extends React.Component {
             console.log("results from postupload: ", results);
             let googleResults = results.data[0];
             let trefleResults = results.data[2];
+            console.log("trefleResults: ", trefleResults);
             if (results.data[1].length == 0) {
               this.setState({ noResults: true });
             }
@@ -69,8 +70,10 @@ export default class Test extends React.Component {
               trefleResults.main_species.growth.moisture_use &&
               trefleResults.main_species.growth.drought_tolerance &&
               trefleResults.main_species.seed.bloom_period &&
-              trefleResults.main_species.specifications.growth_period
+              trefleResults.main_species.specifications.growth_period &&
+              trefleResults.common_name
             ) {
+              let common_name = trefleResults.common_name;
               let bloom = trefleResults.main_species.seed.bloom_period;
               let drought = trefleResults.main_species.growth.drought_tolerance;
               let moisture = trefleResults.main_species.growth.moisture_use;
@@ -84,7 +87,8 @@ export default class Test extends React.Component {
                   moisture,
                   drought,
                   bloom,
-                  growth
+                  growth,
+                  common_name
                 })
                 .then(updategarden => {
                   console.log("updategarden results: ", updategarden);
@@ -129,7 +133,7 @@ export default class Test extends React.Component {
             <br />
             <br />
             {!this.state.hideName && (
-              <div className="garden-info">
+              <div className="uploader">
                 <>
                   <p>Choose a name for your plant</p>
                   <input
@@ -176,7 +180,9 @@ export default class Test extends React.Component {
             <img src="/no-results.gif" />
           </div>
         )}
-        {this.state.showgif && <img src="/loading.gif" />}
+        {this.state.showgif && (
+          <img style={{ marginTop: "7%" }} src="/loading.gif" />
+        )}
         <br />
         <br />
         {this.state.trefle && (

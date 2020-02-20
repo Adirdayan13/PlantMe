@@ -1,8 +1,54 @@
-@media screen and (max-height: 480px) {
+@media screen and (max-height: 668px) {
   html {
-    background-color: white;
+    background-color: green;
   }
-  .info-header {
-    visibility: hidden;
+  .info-header,
+  .garden-header,
+  .upload-header-p {
+    display: none;
+  }
+  .upload-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-family: crete;
+    color: black;
+    border-left: none;
+  }
+
+  .header {
+    width: 100%;
+    height: 65px;
+    background-color: #8bc34a;
+    text-align: center;
+    font-size: 40px;
+    justify-content: baseline;
+    align-items: center;
+    font-family: orange;
+    font-size: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .garden-info {
+    border: 1px solid black;
+    padding: 15px;
+    border-radius: 20px;
+    margin-top: 40px;
+    width: 80%;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px 10px 1px black;
+  }
+  .garden-info > input {
+    border-radius: 20px;
+    text-align: center;
+    margin-bottom: 5px;
+    border: 1px solid black;
+    margin-top: 20px;
   }
 }
