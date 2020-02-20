@@ -387,7 +387,6 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
         .get(options, res => {
           res.on("data", function(chunk) {
             body += chunk;
-            // console.log("body: ", body);
           });
           res.on("end", function() {
             let parsedBody = JSON.parse(body);

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 export default class Test extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { show: false, showUploader: false };
+    this.state = { show: false, showUploader: true };
     this.clickHandler = this.clickHandler.bind(this);
   }
 
@@ -29,7 +29,7 @@ export default class Test extends React.Component {
 
   clickHandlerGarden(e) {
     e.preventDefault();
-    this.setState({ hideName: true, showUploader: true });
+    this.setState({ showName: true, showUploader: false });
   }
 
   grabFile(e) {
@@ -132,19 +132,18 @@ export default class Test extends React.Component {
             </h3>
             <br />
             <br />
-            {!this.state.hideName && (
+            {this.state.showName && (
               <div className="uploader">
                 <>
                   <p>Choose a name for your plant</p>
                   <input
+                    autoComplete="off"
                     onChange={e => this.handleChangeGarden(e)}
                     type="text"
                     name="plantName"
                   />
                   <br />
-                  <button onClick={e => this.clickHandlerGarden(e)}>
-                    Add name
-                  </button>
+                  <button onClick={e => this.clickHandler(e)}>Add name</button>
                 </>
               </div>
             )}
@@ -161,7 +160,9 @@ export default class Test extends React.Component {
                     onChange={e => this.grabFile(e)}
                   />
                 </form>
-                <button onClick={e => this.clickHandler(e)}>Click Me</button>
+                <button onClick={e => this.clickHandlerGarden(e)}>
+                  Click Me
+                </button>
               </div>
             )}
           </>

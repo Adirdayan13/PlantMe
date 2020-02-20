@@ -116,7 +116,7 @@ export default class Garden extends React.Component {
                   <p style={{ marginTop: "150px" }}>
                     You dont have nothing in your garden yet.
                     <br />
-                    Upload your first plant
+                    Upload your first plant.
                   </p>
                 </>
               )}

@@ -27,7 +27,7 @@ export default class Registration extends React.Component {
         console.log("data: ", data);
         if (data.success) {
           console.log("post register worked");
-          location.replace("/");
+          location.replace("/garden");
         } else {
           console.log("post register didnt worked");
           this.setState({
@@ -97,10 +97,13 @@ export default class Registration extends React.Component {
             Register
           </button>
           <br></br>
-          <Link to="/login">Click here to Log in!</Link>
-          <p onClick={e => this.guest(e)}>Click here to log in as a guest!</p>
+          <Link className="login-link" to="/login">
+            Click here to Log in!
+          </Link>
         </div>
       </div>
     );
   }
 }
+
+// <p onClick={e => this.guest(e)}>Click here to log in as a guest!</p>

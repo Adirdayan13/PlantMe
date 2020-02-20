@@ -34,8 +34,12 @@ export default function Login() {
         />
         <button onClick={handleSubmit}>Submit</button>
         <br />
-        <Link to="/">Click here to register!</Link>
-        <Link to="/reset/start">Forgot your password ? Click here!</Link>
+        <Link className="register-link" to="/">
+          Click here to register!
+        </Link>
+        <Link className="reset-link" to="/reset/start">
+          Forgot your password ? Click here!
+        </Link>
       </div>
     </div>
   );

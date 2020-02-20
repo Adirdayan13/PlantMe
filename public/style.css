@@ -13,6 +13,21 @@ html {
   min-height: 100vh;
 }
 
+::placeholder {
+  color: white;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: white;
+}
+
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: white;
+}
+
 @font-face {
   src: url("orange juice 2.0.ttf");
   font-family: "orange";
@@ -35,11 +50,17 @@ input {
   margin-bottom: 5px;
   border: 1px solid black;
   box-shadow: 2px 2px 5px 1px black;
+  background: #8bc34a;
+  color: white;
+  height: 20px;
 }
 
 button {
   border: 1px solid black;
   border-radius: 20px;
+  background-color: #8bc34a;
+  height: 20px;
+  color: black;
 }
 
 .header {
@@ -89,6 +110,17 @@ button {
   outline: none;
 }
 
+.information {
+  font-family: crete;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 70px;
+  font-size: 25px;
+}
+
 .register,
 .login,
 .reset {
@@ -112,7 +144,15 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translate(0, 40%);
+  transform: translate(0, 25%);
+}
+
+.login-link,
+.reset-link,
+.register-link {
+  font-family: orange;
+  color: black;
+  font-size: 30px;
 }
 
 .login-inputs,
@@ -120,7 +160,7 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translate(0, 70%);
+  transform: translate(0, 50%);
 }
 
 .test,
@@ -160,7 +200,8 @@ button {
 .seed,
 .additional-pictures,
 .foliage-and-flower,
-.love {
+.love,
+.enviornment {
   border: 1px solid black;
   border-radius: 20px;
   padding: 10px;
@@ -176,7 +217,7 @@ button {
 .result-img {
   border-radius: 40px;
   box-shadow: 5px 5px 10px 1px black;
-  width: 40%;
+  width: 300px;
 }
 
 .plant-img {
@@ -206,7 +247,7 @@ button {
   background: transparent;
   font-family: orange;
   font-size: 25px;
-  width: 100%;
+  width: 0%;
 }
 
 .garden-info,
@@ -233,6 +274,7 @@ button {
 
 .uploader > input {
   margin-top: 20px;
+  background-color: #8bc34a;
 }
 
 .small-logos {

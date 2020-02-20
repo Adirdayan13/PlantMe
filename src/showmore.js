@@ -96,15 +96,14 @@ export default class Showmore extends React.Component {
             <div className="names">
               <p style={{ textDecoration: "underline" }}>Names:</p>
               <br />
-              {trefleResults.varieties.family_common_name && (
-                <p>
-                  Family name: {trefleResults.varieties[0].family_common_name}
-                </p>
+              {trefleResults.scientific_name && (
+                <p>Scientific name: {trefleResults.scientific_name}</p>
               )}
-              {this.props.state.trefle[0].scientific_name && (
-                <p>
-                  Scientific name: {this.props.state.trefle[0].scientific_name}
-                </p>
+              {trefleResults.family_common_name && (
+                <p>Family name: {trefleResults.family_common_name}</p>
+              )}
+              {trefleResults.common_name && (
+                <p>Common name: {trefleResults.common_name}</p>
               )}
             </div>
             <div className="specifications">
@@ -137,11 +136,21 @@ export default class Showmore extends React.Component {
                 </p>
               )}
             </div>
-            <div className="seed">
-              <p style={{ textDecoration: "underline" }}>Seed:</p>
-              <br />
-              {trefleResults.main_species.seed && (
-                <>
+            {trefleResults.main_species.seed && (
+              <>
+                <div className="seed">
+                  <p style={{ textDecoration: "underline" }}>Seed:</p>
+                  <br />
+                  {trefleResults.main_species.fruit_or_seed
+                    .seed_period_begin && (
+                    <p>
+                      Seed period begin:{" "}
+                      {
+                        trefleResults.main_species.fruit_or_seed
+                          .seed_period_begin
+                      }
+                    </p>
+                  )}
                   {trefleResults.main_species.seed.seedling_vigor && (
                     <p>
                       Seedling vigor:{" "}
@@ -154,24 +163,51 @@ export default class Showmore extends React.Component {
                       {trefleResults.main_species.seed.seed_spread_rate}
                     </p>
                   )}
-                  {trefleResults.main_species.seed.commercial_availability && (
+                  {trefleResults.main_species.fruit_or_seed.seed_period_end && (
                     <p>
-                      Commercial availability:{" "}
-                      {trefleResults.main_species.seed.commercial_availability}
+                      Seed period end:{" "}
+                      {trefleResults.main_species.fruit_or_seed.seed_period_end}
                     </p>
                   )}
-                  {trefleResults.main_species.seed.bloom_period && (
+                  {trefleResults.main_species.fruit_or_seed.seed_abundance && (
                     <p>
-                      Bloom_period:{" "}
-                      {trefleResults.main_species.seed.bloom_period}
+                      Seed abundance:{" "}
+                      {trefleResults.main_species.fruit_or_seed.seed_abundance}
                     </p>
                   )}
-                </>
-              )}
-            </div>
+                  {trefleResults.main_species.seed.seedling_vigor && (
+                    <p>
+                      Seedling vigor:{" "}
+                      {trefleResults.main_species.seed.seedling_vigor}
+                    </p>
+                  )}
+                  {trefleResults.main_species.seed.seed_spread_rate && (
+                    <p>
+                      Seed spread rate:{" "}
+                      {trefleResults.main_species.seed.seed_spread_rate}
+                    </p>
+                  )}
+                  {trefleResults.main_species.seed.seeds_per_pound && (
+                    <p>
+                      Seeds per pound:{" "}
+                      {trefleResults.main_species.seed.seeds_per_pound}
+                    </p>
+                  )}
+                  {trefleResults.main_species.fruit_or_seed.color && (
+                    <p>
+                      Seeds or fruit color:{" "}
+                      {trefleResults.main_species.fruit_or_seed.color}
+                    </p>
+                  )}
+                </div>
+              </>
+            )}
             <div className="growth">
-              <p style={{ textDecoration: "underline" }}>Growth:</p>
+              <p style={{ textDecoration: "underline" }}>Growth condition:</p>
               <br />
+              {trefleResults.main_species.duration && (
+                <p>Duration: {trefleResults.main_species.duration}</p>
+              )}
               {trefleResults.main_species.seed.bloom_period && (
                 <p>
                   Bloom period: {trefleResults.main_species.seed.bloom_period}
@@ -204,6 +240,9 @@ export default class Showmore extends React.Component {
                   {trefleResults.main_species.specifications.growth_form}
                 </p>
               )}
+            </div>
+            <div className="enviornment">
+              <p style={{ textDecoration: "underline" }}>Environment</p>
               {trefleResults.main_species.growth.shade_tolerance && (
                 <p>
                   Shade tolerance:{" "}
@@ -215,6 +254,51 @@ export default class Showmore extends React.Component {
                 <p>
                   Salinity tolerance:{" "}
                   {trefleResults.main_species.growth.salinity_tolerance}
+                </p>
+              )}
+              {trefleResults.main_species.growth.ph_minimum && (
+                <p>
+                  PH minimum: {trefleResults.main_species.growth.ph_minimum}
+                </p>
+              )}
+              {trefleResults.main_species.growth.ph_maximum && (
+                <p>
+                  PH maximum: {trefleResults.main_species.growth.ph_maximum}
+                </p>
+              )}
+              {trefleResults.main_species.growth.moisture_use && (
+                <p>
+                  Moisture use: {trefleResults.main_species.growth.moisture_use}
+                </p>
+              )}
+              {trefleResults.main_species.growth.hedge_tolerance && (
+                <p>
+                  Hedge tolerance:{" "}
+                  {trefleResults.main_species.growth.hedge_tolerance}
+                </p>
+              )}
+              {trefleResults.main_species.growth.frost_free_days_minimum && (
+                <p>
+                  Minimum frost free days:{" "}
+                  {trefleResults.main_species.growth.frost_free_days_minimum}
+                </p>
+              )}
+              {trefleResults.main_species.growth.fire_tolerance && (
+                <p>
+                  Fire tolerance:{" "}
+                  {trefleResults.main_species.growth.fire_tolerance}
+                </p>
+              )}
+              {trefleResults.main_species.growth.fertility_requirement && (
+                <p>
+                  Fertility requirement:{" "}
+                  {trefleResults.main_species.growth.fertility_requirement}
+                </p>
+              )}
+              {trefleResults.main_species.growth.drought_tolerance && (
+                <p>
+                  Drought tolerance:{" "}
+                  {trefleResults.main_species.growth.drought_tolerance}
                 </p>
               )}
               {trefleResults.main_species.growth.temperature_minimum && (
@@ -315,117 +399,6 @@ export default class Showmore extends React.Component {
                   acre
                 </p>
               )}
-              {trefleResults.main_species.growth.planting_density_maximum
-                .sqm && (
-                <p>
-                  Planting density minimum:
-                  <br />
-                  {trefleResults.main_species.growth.planting_density_maximum.sqm.toFixed(
-                    2
-                  )}{" "}
-                  sqm /{" "}
-                  {trefleResults.main_species.growth.planting_density_maximum.sqm.toFixed(
-                    2
-                  )}{" "}
-                  acre
-                </p>
-              )}
-              {trefleResults.main_species.growth.ph_minimum && (
-                <p>
-                  PH minimum: {trefleResults.main_species.growth.ph_minimum}
-                </p>
-              )}
-              {trefleResults.main_species.growth.ph_maximum && (
-                <p>
-                  PH minimum: {trefleResults.main_species.growth.ph_maximum}
-                </p>
-              )}
-              {trefleResults.main_species.growth.moisture_use && (
-                <p>
-                  Moisture use: {trefleResults.main_species.growth.moisture_use}
-                </p>
-              )}
-              {trefleResults.main_species.growth.hedge_tolerance && (
-                <p>
-                  Hedge tolerance:{" "}
-                  {trefleResults.main_species.growth.hedge_tolerance}
-                </p>
-              )}
-              {trefleResults.main_species.growth.frost_free_days_minimum && (
-                <p>
-                  Minimum frost free days:{" "}
-                  {trefleResults.main_species.growth.frost_free_days_minimum}
-                </p>
-              )}
-              {trefleResults.main_species.growth.fire_tolerance && (
-                <p>
-                  Fire tolerance:{" "}
-                  {trefleResults.main_species.growth.fire_tolerance}
-                </p>
-              )}
-              {trefleResults.main_species.growth.fertility_requirement && (
-                <p>
-                  Fertility requirement:{" "}
-                  {trefleResults.main_species.growth.fertility_requirement}
-                </p>
-              )}
-              {trefleResults.main_species.growth.drought_tolerance && (
-                <p>
-                  Drought tolerance:{" "}
-                  {trefleResults.main_species.growth.drought_tolerance}
-                </p>
-              )}
-              {trefleResults.main_species.growth.anaerobic_tolerance && (
-                <p>
-                  Anaerobic tolerance:{" "}
-                  {trefleResults.main_species.growth.anaerobic_tolerance}
-                </p>
-              )}
-              {trefleResults.main_species.fruit_or_seed.seed_period_begin && (
-                <p>
-                  Seed period begin:{" "}
-                  {trefleResults.main_species.fruit_or_seed.seed_period_begin}
-                </p>
-              )}
-              {trefleResults.main_species.fruit_or_seed.seed_period_end && (
-                <p>
-                  Seed period end:{" "}
-                  {trefleResults.main_species.fruit_or_seed.seed_period_end}
-                </p>
-              )}
-              {trefleResults.main_species.fruit_or_seed.seed_abundance && (
-                <p>
-                  Seed abundance:{" "}
-                  {trefleResults.main_species.fruit_or_seed.seed_abundance}
-                </p>
-              )}
-              {trefleResults.main_species.seed.seedling_vigor && (
-                <p>
-                  Seedling vigor:{" "}
-                  {trefleResults.main_species.seed.seedling_vigor}
-                </p>
-              )}
-              {trefleResults.main_species.seed.seed_spread_rate && (
-                <p>
-                  Seed spread rate:{" "}
-                  {trefleResults.main_species.seed.seed_spread_rate}
-                </p>
-              )}
-              {trefleResults.main_species.seed.seeds_per_pound && (
-                <p>
-                  Seeds per pound:{" "}
-                  {trefleResults.main_species.seed.seeds_per_pound}
-                </p>
-              )}
-              {trefleResults.main_species.fruit_or_seed.color && (
-                <p>
-                  Seeds or fruit color:{" "}
-                  {trefleResults.main_species.fruit_or_seed.color}
-                </p>
-              )}
-              {trefleResults.main_species.duration && (
-                <p>Duration: {trefleResults.main_species.duration}</p>
-              )}
             </div>
             <div className="foliage-and-flower">
               <p style={{ textDecoration: "underline" }}>Foliage</p>
@@ -447,14 +420,19 @@ export default class Showmore extends React.Component {
               {trefleResults.main_species.foliage.color && (
                 <p>Color: {trefleResults.main_species.foliage.color}</p>
               )}
-              <p style={{ textDecoration: "underline" }}>Flower</p>
-              {trefleResults.main_species.flower.conspicuous && (
-                <p>
-                  Conspicuous: {trefleResults.main_species.flower.conspicuous}
-                </p>
-              )}
-              {trefleResults.main_species.flower.color && (
-                <p>Color: {trefleResults.main_species.flower.color}</p>
+              {trefleResults.main_species.flower && (
+                <>
+                  <p style={{ textDecoration: "underline" }}>Flower</p>
+                  {trefleResults.main_species.flower.conspicuous && (
+                    <p>
+                      Conspicuous:{" "}
+                      {trefleResults.main_species.flower.conspicuous}
+                    </p>
+                  )}
+                  {trefleResults.main_species.flower.color && (
+                    <p>Color: {trefleResults.main_species.flower.color}</p>
+                  )}
+                </>
               )}
             </div>
             {trefleResults.main_species.images.length > 0 && (
