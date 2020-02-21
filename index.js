@@ -199,6 +199,11 @@ app.post("/login", function(req, res) {
     });
 });
 
+app.post("/logout", (req, res) => {
+  req.session.userId = null;
+  res.redirect("/");
+});
+
 app.post("/guest", (req, res) => {
   db.addGuest("guest")
     .then(results => {

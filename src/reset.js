@@ -17,7 +17,7 @@ export default class Registration extends React.Component {
   render() {
     return (
       <div className="reset">
-        <img className="small-logo" src="/planet-earth.svg" />
+        <img className="small-logo-reset" src="/planet-earth3.svg" />
         <div className="logo-and-text">
           <h1>Welcome to PlantMe</h1>
           <br />
@@ -28,6 +28,7 @@ export default class Registration extends React.Component {
           <p>Reset your password</p>
           <br />
           <input
+            autoComplete="off"
             className="email"
             name="email"
             placeholder="Email"

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 export default class Test extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { show: false, showUploader: true };
+    this.state = { show: false, showUploader: true, filename: "Choose a file" };
     this.clickHandler = this.clickHandler.bind(this);
   }
 
@@ -30,11 +30,16 @@ export default class Test extends React.Component {
   clickHandlerGarden(e) {
     e.preventDefault();
     this.setState({ showName: true, showUploader: false });
+    console.log("e.taget.name: ", e.target.name);
+    if (!this.state.file) {
+      this.setState({ error: true, hide: true });
+    }
   }
 
   grabFile(e) {
     this.setState({
-      [e.target.name]: e.target.files[0]
+      [e.target.name]: e.target.files[0],
+      filename: e.target.files[0].name
     });
     console.log("this.state from grabfile: ", this.state);
   }
@@ -142,15 +147,16 @@ export default class Test extends React.Component {
                     type="text"
                     name="plantName"
                   />
+
                   <br />
                   <button onClick={e => this.clickHandler(e)}>Add name</button>
+                  <img className="grassgif-showname" src="grassgif.gif" />
                 </>
               </div>
             )}
             {this.state.showUploader && (
               <div className="uploader">
-                <h1>Upload your picture</h1>
-                <br />
+                <h1 style={{ display: "none" }}>Upload your picture</h1>
                 <form>
                   <input
                     ref={ref => (this.fileInput = ref)}
@@ -159,10 +165,22 @@ export default class Test extends React.Component {
                     id="file"
                     onChange={e => this.grabFile(e)}
                   />
+                  <label
+                    className="label"
+                    htmlFor="file"
+                    value={this.state.filename}
+                  >
+                    {this.state.filename}
+                  </label>
                 </form>
-                <button onClick={e => this.clickHandlerGarden(e)}>
+                <br />
+                <button
+                  className="button-uploader"
+                  onClick={e => this.clickHandlerGarden(e)}
+                >
                   Click Me
                 </button>
+                <img className="grassgif" src="grassgif.gif" />
               </div>
             )}
           </>

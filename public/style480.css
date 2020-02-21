@@ -4,7 +4,8 @@
   }
   .info-header,
   .garden-header,
-  .upload-header-p {
+  .upload-header-p,
+  .logout-header {
     display: none;
   }
   .upload-header {

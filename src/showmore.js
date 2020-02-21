@@ -243,6 +243,7 @@ export default class Showmore extends React.Component {
             </div>
             <div className="enviornment">
               <p style={{ textDecoration: "underline" }}>Environment</p>
+              <br />
               {trefleResults.main_species.growth.shade_tolerance && (
                 <p>
                   Shade tolerance:{" "}
@@ -402,6 +403,7 @@ export default class Showmore extends React.Component {
             </div>
             <div className="foliage-and-flower">
               <p style={{ textDecoration: "underline" }}>Foliage</p>
+              <br />
               {trefleResults.main_species.foliage.texture && (
                 <p>Texture: {trefleResults.main_species.foliage.texture}</p>
               )}
@@ -420,9 +422,11 @@ export default class Showmore extends React.Component {
               {trefleResults.main_species.foliage.color && (
                 <p>Color: {trefleResults.main_species.foliage.color}</p>
               )}
+              <br />
               {trefleResults.main_species.flower && (
                 <>
                   <p style={{ textDecoration: "underline" }}>Flower</p>
+                  <br />
                   {trefleResults.main_species.flower.conspicuous && (
                     <p>
                       Conspicuous:{" "}

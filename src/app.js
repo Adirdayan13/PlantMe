@@ -29,7 +29,14 @@ export default class App extends React.Component {
   imgae() {
     this.setState({ image: image, hideAll: false });
   }
-
+  logout() {
+    axios
+      .post("/logout")
+      .then(() => {
+        location.replace("/");
+      })
+      .catch(err => console.log("error from logout: ", err));
+  }
   render() {
     // if (!this.state.id) {
     //   return "Loading...";
@@ -41,7 +48,11 @@ export default class App extends React.Component {
         <BrowserRouter>
           <header className="header">
             <img className="small-logo" src="/planet-earth.svg" />
-            <p></p>
+            <img
+              onClick={this.logout}
+              className="logout-header"
+              src="/logout.svg"
+            />
             <p></p>
             <p>PlantMe</p>
             <div>

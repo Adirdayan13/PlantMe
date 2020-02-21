@@ -11,10 +11,8 @@ export default class Registration extends React.Component {
     this.setState({
       [e.target.name]: e.target.value
     });
-    console.log("change !");
   }
   submit(e) {
-    console.log("button clicked");
     e.preventDefault();
     axios
       .post("/register", {
@@ -24,12 +22,9 @@ export default class Registration extends React.Component {
         password: this.state.password
       })
       .then(({ data }) => {
-        console.log("data: ", data);
         if (data.success) {
-          console.log("post register worked");
           location.replace("/garden");
         } else {
-          console.log("post register didnt worked");
           this.setState({
             error: true
           });
@@ -57,50 +52,102 @@ export default class Registration extends React.Component {
   render() {
     return (
       <div className="register">
-        <img className="small-logo" src="/planet-earth.svg" />
+        <img className="small-logo-register" src="/planet-earth3.svg" />
         <div className="logo-and-text">
           <h1>Welcome to PlantMe</h1>
           <br />
           <h2>Identify Plant, Flower, Weed and more with picture</h2>
           <img className="plant-img" src={"/plant.svg"} />
         </div>
-        <div className="register-inputs">
-          <input
-            className="first"
-            name="first"
-            placeholder="First name"
-            onChange={e => this.handleChange(e)}
-          />
+        {!this.state.error && (
+          <div className="register-inputs">
+            <input
+              autoComplete="off"
+              className="first"
+              name="first"
+              placeholder="First name"
+              onChange={e => this.handleChange(e)}
+            />
 
-          <input
-            className="last"
-            name="last"
-            placeholder="Last name"
-            onChange={e => this.handleChange(e)}
-          />
+            <input
+              autoComplete="off"
+              className="last"
+              name="last"
+              placeholder="Last name"
+              onChange={e => this.handleChange(e)}
+            />
 
-          <input
-            className="email"
-            name="email"
-            placeholder="Email"
-            onChange={e => this.handleChange(e)}
-          />
+            <input
+              autoComplete="off"
+              className="email"
+              name="email"
+              placeholder="Email"
+              onChange={e => this.handleChange(e)}
+            />
 
-          <input
-            className="password"
-            name="password"
-            placeholder="Password"
-            type="password"
-            onChange={e => this.handleChange(e)}
-          />
-          <button className="submit-btn-register" onClick={e => this.submit(e)}>
-            Register
-          </button>
-          <br></br>
-          <Link className="login-link" to="/login">
-            Click here to Log in!
-          </Link>
-        </div>
+            <input
+              autoComplete="off"
+              className="password"
+              name="password"
+              placeholder="Password"
+              type="password"
+              onChange={e => this.handleChange(e)}
+            />
+            <button
+              className="submit-btn-register"
+              onClick={e => this.submit(e)}
+            >
+              Register
+            </button>
+            <br></br>
+            <Link className="login-link" to="/login">
+              Click here to Log in!
+            </Link>
+          </div>
+        )}
+
+        {this.state.error && (
+          <div className="register-inputs">
+            <input
+              className="first-error"
+              name="first"
+              placeholder="First name"
+              onChange={e => this.handleChange(e)}
+            />
+
+            <input
+              className="last-error"
+              name="last"
+              placeholder="Last name"
+              onChange={e => this.handleChange(e)}
+            />
+
+            <input
+              className="email-error"
+              name="email"
+              placeholder="Email"
+              onChange={e => this.handleChange(e)}
+            />
+
+            <input
+              className="password"
+              name="password"
+              placeholder="Password"
+              type="password"
+              onChange={e => this.handleChange(e)}
+            />
+            <button
+              className="submit-btn-register"
+              onClick={e => this.submit(e)}
+            >
+              Register
+            </button>
+            <br></br>
+            <Link className="login-link" to="/login">
+              Click here to Log in!
+            </Link>
+          </div>
+        )}
       </div>
     );
   }
