@@ -256,7 +256,13 @@ button:hover {
 }
 
 .loading-gif {
-  margin-top: 20%;
+  margin-top: 10%;
+}
+
+.results,
+.result,
+.result-info {
+  width: 100%;
 }
 
 .names,
@@ -273,7 +279,7 @@ button:hover {
   margin-top: 10px;
   margin-bottom: 2rem;
   box-shadow: 5px 5px 10px 1px black;
-  width: 40%;
+  width: 35%;
   text-align: center;
   justify-content: center;
 }
@@ -401,6 +407,7 @@ button:hover {
   text-align: center;
   font-family: orange;
   font-size: 40px;
+  width: 100%;
 }
 
 .garden-results {

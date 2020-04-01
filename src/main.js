@@ -193,7 +193,7 @@ export default class Main extends React.Component {
         <br />
         <br />
         {this.state.trefle && (
-          <div>
+          <div style={{ width: "100%" }}>
             <br />
             {this.state.trefle.map((result, key) => (
               <div className="result" key={key}>
@@ -226,7 +226,7 @@ export default class Main extends React.Component {
               </div>
             ))}
             {this.state.trefle[0] != undefined && (
-              <div>
+              <div className="result-info">
                 <br />
                 <p
                   style={{
