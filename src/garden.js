@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "./axios";
-import Showmore from "./showmore";
+import PlantInfo from "./plantinfo";
 import Tooltip from "react-tooltip-lite";
 import { BrowserRouter, Route } from "react-router-dom";
 
@@ -12,14 +12,12 @@ export default class Garden extends React.Component {
     this.state = { editName: false };
   }
   componentDidMount() {
-    console.log("componentDidMount");
     this.mount();
   }
   mount() {
     axios
       .get("/garden.json")
       .then(results => {
-        console.log("results from GET garden: ", results);
         let myGarden = results.data;
         myGarden.map((item, index) => {
           if (
@@ -32,7 +30,6 @@ export default class Garden extends React.Component {
             item.marginBottom = "50px";
           }
         });
-        console.log("my garden after looop: ", myGarden);
         this.setState({ myGarden });
       })
       .catch(err => {
@@ -55,10 +52,6 @@ export default class Garden extends React.Component {
     });
   }
 
-  componentDidUpdate() {
-    console.log("updated !! *****************************");
-  }
-
   submit(id) {
     let plantName = this.state.plantName;
     axios
@@ -67,22 +60,11 @@ export default class Garden extends React.Component {
         let plantName = this.state.plantName;
         let plantId = this.state.plantId;
         this.setState({ editName: false });
-        console.log("results from updategarden: ", results);
-        // var newState = this.state.myGarden.map((plant, item) => {
-        //   if (plant.id == plantId) {
-        //     plant.name = plantName;
-        //   }
-        //   return plant;
-        // });
-        // console.log("newState: ", newState);
-        // this.setState({ myGarden: newState });
-        // this.mount();
         location.replace("/garden");
       })
       .catch(err => console.log("error from updateGardenName: ", err));
   }
   deletePic(plantId) {
-    console.log("plantId:", plantId);
     axios
       .post("/deleteGarden", { plantId: plantId })
       .then(results => {
@@ -90,19 +72,8 @@ export default class Garden extends React.Component {
       })
       .catch(err => console.log("error from deleteGarden: ", err));
   }
-  // common_name(common_name) {
-  //   console.log("common_name: ", common_name);
-  //   axios
-  //     .post("/trefle", { common_name })
-  //     .then(results => {
-  //       console.log("results from trefle: ", results);
-  //     })
-  //     .catch(err => console.log("error from trefle: ", err));
-  // }
 
   render() {
-    console.log("this.props. from garden: ", this.props);
-    console.log("this.state from garden: ", this.state);
     return (
       <div className="garden-div-wrapper">
         <p style={{ marginTop: "20px" }}>My garden</p>
@@ -134,12 +105,12 @@ export default class Garden extends React.Component {
                             this.setState({ plantId: plant.id, editName: true })
                           }
                           style={{ width: "20px" }}
-                          src="pencil.svg"
+                          src="pics/pencil.svg"
                         />
                         <img
                           onClick={plantId => this.deletePic(plant.id)}
                           style={{ width: "20px" }}
-                          src="trash.svg"
+                          src="pics/trash.svg"
                         />
                       </div>
                       {this.state.plantId != plant.id && (
@@ -177,24 +148,36 @@ export default class Garden extends React.Component {
                       <div className="small-logos">
                         {plant.growth && (
                           <Tooltip content={`I grow in ${plant.growth}`}>
-                            <img style={{ width: "40px" }} src="/growth.svg" />
+                            <img
+                              style={{ width: "40px" }}
+                              src="/pics/growth.svg"
+                            />
                           </Tooltip>
                         )}
                         {plant.bloom && (
                           <Tooltip content={`I bloom in ${plant.bloom}`}>
-                            <img style={{ width: "40px" }} src="/bloom.svg" />
+                            <img
+                              style={{ width: "40px" }}
+                              src="/pics/bloom.svg"
+                            />
                           </Tooltip>
                         )}
                         {plant.shade && (
                           <>
                             {plant.shade == "Intolerant" && (
                               <Tooltip content={`I love the sun`}>
-                                <img style={{ width: "40px" }} src="/sun.svg" />
+                                <img
+                                  style={{ width: "40px" }}
+                                  src="/pics/sun.svg"
+                                />
                               </Tooltip>
                             )}
                             {plant.shade == "Intermediate" && (
                               <Tooltip content={`I love not too hot sun`}>
-                                <img style={{ width: "40px" }} src="/sun.svg" />
+                                <img
+                                  style={{ width: "40px" }}
+                                  src="/pics/sun.svg"
+                                />
                               </Tooltip>
                             )}
                           </>
@@ -205,7 +188,7 @@ export default class Garden extends React.Component {
                               <Tooltip content={`I dont need a lot of water`}>
                                 <img
                                   style={{ width: "40px" }}
-                                  src="/drought.svg"
+                                  src="/pics/drought.svg"
                                 />
                               </Tooltip>
                             )}
@@ -214,7 +197,7 @@ export default class Garden extends React.Component {
                               <Tooltip content={`I need a lot of water`}>
                                 <img
                                   style={{ width: "40px" }}
-                                  src="/water.svg"
+                                  src="/pics/water.svg"
                                 />
                               </Tooltip>
                             )}
@@ -225,7 +208,7 @@ export default class Garden extends React.Component {
                               >
                                 <img
                                   style={{ width: "40px" }}
-                                  src="/drought.svg"
+                                  src="/pics/drought.svg"
                                 />
                               </Tooltip>
                             )}
@@ -236,7 +219,7 @@ export default class Garden extends React.Component {
                           <Tooltip content={`I dont like humid`}>
                             <img
                               style={{ width: "40px" }}
-                              src="/humidity.svg"
+                              src="/pics/humidity.svg"
                             />
                           </Tooltip>
                         )}
@@ -244,7 +227,7 @@ export default class Garden extends React.Component {
                           <Tooltip content={`I love a lot of humid`}>
                             <img
                               style={{ width: "40px" }}
-                              src="/humidity.svg"
+                              src="/pics/humidity.svg"
                             />
                           </Tooltip>
                         )}
@@ -252,17 +235,13 @@ export default class Garden extends React.Component {
                           <Tooltip content={`I love a bit humid`}>
                             <img
                               style={{ width: "40px" }}
-                              src="/humidity.svg"
+                              src="/pics/humidity.svg"
                             />
                           </Tooltip>
                         )}
                       </div>
                       <img
-                        style={{
-                          width: "300px",
-                          height: "300px",
-                          borderRadius: "20px"
-                        }}
+                        className="image-garden"
                         key={plant.id}
                         src={plant.picture}
                       />

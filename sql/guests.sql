@@ -1,6 +1,0 @@
-DROP TABLE IF EXISTS guests CASCADE;
-
-CREATE TABLE guests(
-    id SERIAL PRIMARY KEY,
-    guest VARCHAR
-);

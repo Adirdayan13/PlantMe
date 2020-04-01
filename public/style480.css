@@ -1,12 +1,14 @@
-@media screen and (max-height: 668px) {
-  html {
-    background-color: green;
-  }
-  .info-header,
-  .garden-header,
-  .upload-header-p,
-  .logout-header {
+@media screen and (max-width: 480px) {
+  .logout-header,
+  .small-logo,
+  .plantme-header {
     display: none;
+  }
+  .uploader {
+    width: 70%;
+  }
+  h3 {
+    width: 80%;
   }
   .upload-header {
     display: flex;
@@ -32,6 +34,7 @@
     flex-direction: row;
     justify-content: space-around;
   }
+
   .garden-info {
     border: 1px solid black;
     padding: 15px;
@@ -44,6 +47,24 @@
     justify-content: center;
     align-items: center;
     box-shadow: 5px 5px 10px 1px black;
+  }
+  .wrong-gif {
+    width: 100%;
+  }
+  .loading-gif {
+    margin-top: 45%;
+    width: 100%;
+  }
+  .garden-results,
+  .names,
+  .specifications,
+  .growth,
+  .seed,
+  .additional-pictures,
+  .foliage-and-flower,
+  .love,
+  .enviornment {
+    width: 80%;
   }
   .garden-info > input {
     border-radius: 20px;

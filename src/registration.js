@@ -52,15 +52,17 @@ export default class Registration extends React.Component {
   render() {
     return (
       <div className="register">
-        <img className="small-logo-register" src="/planet-earth3.svg" />
+        <img className="small-logo-register" src="/pics/planet-earth3.svg" />
         <div className="logo-and-text">
           <h1>Welcome to PlantMe</h1>
           <br />
           <h2>Identify Plant, Flower, Weed and more with picture</h2>
-          <img className="plant-img" src={"/plant.svg"} />
+          <img className="plant-img" src={"/pics/plant.svg"} />
         </div>
         {!this.state.error && (
           <div className="register-inputs">
+            <p className="register-text">Please register</p>
+            <br />
             <input
               autoComplete="off"
               className="first"
@@ -93,13 +95,15 @@ export default class Registration extends React.Component {
               type="password"
               onChange={e => this.handleChange(e)}
             />
+            <br />
             <button
               className="submit-btn-register"
               onClick={e => this.submit(e)}
             >
               Register
             </button>
-            <br></br>
+            <br />
+            <br />
             <Link className="login-link" to="/login">
               Click here to Log in!
             </Link>
@@ -152,5 +156,3 @@ export default class Registration extends React.Component {
     );
   }
 }
-
-// <p onClick={e => this.guest(e)}>Click here to log in as a guest!</p>

@@ -1,22 +1,37 @@
-@media screen and (max-height: 480px) {
-  html {
-    background-color: blue;
-  }
-  .info-header,
-  .garden-header,
-  .upload-header-p {
-    visibility: hidden;
-  }
+@media screen and (max-height: 380px) {
   .header {
     width: 100%;
     height: 65px;
     background-color: #8bc34a;
     text-align: center;
-    font-size: 40px;
-    justify-content: baseline;
     align-items: center;
     font-family: orange;
     font-size: 60px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 9% 10% auto 20% 20% 20%;
+  }
+  .uploader {
+    width: 60%;
+  }
+  .wrong-gif {
+    width: 40%;
+  }
+  .loading-gif {
+    margin-top: 5%;
+    width: 40%;
+  }
+  .garden-results {
+    width: 40%;
+  }
+  .garden-results,
+  .names,
+  .specifications,
+  .growth,
+  .seed,
+  .additional-pictures,
+  .foliage-and-flower,
+  .love,
+  .enviornment {
+    width: 60%;
   }
 }

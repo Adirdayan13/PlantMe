@@ -5,11 +5,10 @@ const app = express();
 const compression = require("compression");
 const cookieSession = require("cookie-session");
 const cryptoRandomString = require("crypto-random-string");
-const ses = require("./ses");
 const path = require("path");
 const https = require("https");
 const bcrypt = require("./bcrypt");
-///upload
+
 const multer = require("multer");
 const s3 = require("./s3");
 const uidSafe = require("uid-safe");
@@ -17,7 +16,7 @@ const { s3Url } = require("./config");
 const server = require("http").Server(app);
 const io = require("socket.io").listen(server);
 const secret = require("./secrets");
-/// /upload
+
 const fs = require("fs");
 const request = require("request");
 const apiKey = secret.apiKey;
@@ -28,8 +27,6 @@ const googlePhotosSecret = secret.googlePhotosSecret;
 let allResults;
 const vision = require("@google-cloud/vision");
 let imageUrl;
-// let imageUrl =
-//   "https://upload.wikimedia.org/wikipedia/commons/9/99/Field_of_Mentha_x_piperita_02.jpg";
 
 if (process.env.NODE_ENV != "production") {
   app.use(
@@ -91,28 +88,15 @@ const uploader = multer({
 /// GOOGLE API ////
 
 const googleAPI = async function quickstart(file) {
-  // let resultsArr = [];
-
   // Creates a client
   const client = new vision.ImageAnnotatorClient({
     keyFilename: "./APIKey.json"
   });
 
-  // Performs web and label detection on the image file
+  // Performs web detection on the image file
   const [resultsPics] = await client.webDetection(file);
-
   const webEntities = resultsPics.webDetection.webEntities;
-  // console.log("images :", webEntities);
 
-  // const [resultsName] = await client.labelDetection(file);
-  // const labels = resultsName.labelAnnotations;
-
-  // images.forEach(webEntitie => {
-  //   resultsArr.push({ webEntitie: webEntitie.description });
-  // });
-  // labels.forEach(label => {
-  //   resultsArr.push({ label: label.description });
-  // });
   return webEntities;
 };
 
@@ -122,8 +106,6 @@ app.get("/welcome", function(req, res) {
   console.log("*************************** GET WELCOME");
   if (req.session.userId) {
     res.redirect("/");
-  } else if (req.session.guest) {
-    res.redirect("/guestlog");
   } else {
     res.sendFile(__dirname + "/index.html");
   }
@@ -204,29 +186,9 @@ app.post("/logout", (req, res) => {
   res.redirect("/");
 });
 
-app.post("/guest", (req, res) => {
-  db.addGuest("guest")
-    .then(results => {
-      req.session.guest = results[0].id;
-      console.log("results from guest: ", results[0].id);
-      console.log("req.session: ", req.session);
-      res.json({ guest: true });
-    })
-    .catch(err => console.log("error from add guest: ", err));
-});
-
-app.get("/guestlog", (req, res) => {
-  if (req.session.guest) {
-    res.sendFile(__dirname + "/index.html");
-  } else {
-    res.redirect("/");
-  }
-});
-
 //// APIS ////
 
 app.post("/garden", uploader.single("file"), s3.upload, (req, res) => {
-  console.log("*************************** POST garden");
   if (!req.session.userId) {
     res.redirect("/welome");
   }
@@ -236,8 +198,6 @@ app.post("/garden", uploader.single("file"), s3.upload, (req, res) => {
     plantName = "My plant";
   }
   const imageUrl = s3Url + req.file.filename;
-  console.log("req.body: ", req.body);
-  console.log("req.file: ", req.file);
   if (req.file) {
     db.addGarden(userId, imageUrl, plantName)
       .then(results => {
@@ -251,11 +211,9 @@ app.post("/garden", uploader.single("file"), s3.upload, (req, res) => {
 });
 
 app.post("/updategardenname", (req, res) => {
-  console.log("req.body from update @!: ", req.body);
   let id = req.body.plantId;
   let name = req.body.plantName;
   if (name == undefined || name == "" || !name) {
-    console.log("we are in if !");
     name = "My plant";
   }
   console.log("name :", name);
@@ -271,7 +229,6 @@ app.post("/updategarden", (req, res) => {
   if (!req.session.userId) {
     res.redirect("/welome");
   }
-  console.log("req.body from updategarden: ", req.body);
   let userId = req.session.userId;
   let common_name = req.body.common_name;
   let columnId = req.body.columnId;
@@ -290,7 +247,6 @@ app.post("/updategarden", (req, res) => {
     common_name
   )
     .then(results => {
-      console.log("results from update garden: ", results);
       res.json(results);
     })
     .catch(err => {
@@ -299,7 +255,6 @@ app.post("/updategarden", (req, res) => {
 });
 
 app.post("/deleteGarden", (req, res) => {
-  console.log("req.body from deleteGarden: ", req.body);
   let id = req.body.plantId;
   db.deleteGarden(id)
     .then(results => {
@@ -315,7 +270,6 @@ app.get("/garden.json", (req, res) => {
   let userId = req.session.userId;
   db.getGarden(userId)
     .then(results => {
-      // console.log("results from GET garden: ", results);
       res.json(results);
     })
     .catch(err => {
@@ -324,7 +278,6 @@ app.get("/garden.json", (req, res) => {
 });
 
 app.post("/upload", uploader.single("file"), async (req, res) => {
-  console.log("**************************  upload POST");
   if (!req.session.userId) {
     res.redirect("/welome");
   }
@@ -362,7 +315,6 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
           });
           res.on("end", function() {
             let parsedBody = JSON.parse(body);
-            // console.log("parsedBody from get trefle: ", parsedBody);
             allResults.push(parsedBody);
             resolve(allResults);
           });
@@ -371,14 +323,10 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
     });
   }
 
-  console.log("p1: ", p1);
-
   function getImage(url) {
     return new Promise((resolve, reject) => {
       let host = url.slice(8, 17);
       let path = url.replace("https://trefle.io", "");
-      // console.log("host: ", host);
-      // console.log("path: ", path);
       const options = {
         hostname: host,
         path: path,
@@ -387,7 +335,7 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
         }
       };
       let body = "";
-      // let parsedResults = "";
+
       https
         .get(options, res => {
           res.on("data", function(chunk) {
@@ -395,14 +343,12 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
           });
           res.on("end", function() {
             let parsedBody = JSON.parse(body);
-            // console.log("parsedBody from getImage from trefle: ", parsedBody);
             allResults.push(parsedBody);
             resolve(JSON.parse(body));
           });
 
-          if (res.statusCode == 200) {
-          } else {
-            console.log("status code not 200");
+          if (res.statusCode !== 200) {
+            console.log(`status code: ${res.statusCode}`);
             reject(res.statusMessage);
           }
         })
@@ -411,21 +357,11 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
         });
     });
   }
-  //
+
   async function fetch() {
     try {
       let google = await p1;
-      if (google == "Vermont" || google == "Krystal Ann Photography") {
-        google = "Common sunflower";
-      }
-      if (google.includes("lavender")) {
-        google = "lavender thrift";
-      }
-      if (google.includes("Perfume")) {
-        google = "lavender thrift";
-      }
       const trefle = await getTrefle(google);
-      // console.log("trefle: ", trefle);
       const trefleLinks = trefle[1].map(trefle => trefle.link);
       if (trefleLinks.length > 0) {
         const promises = await Promise.all([
@@ -447,109 +383,7 @@ app.post("/upload", uploader.single("file"), async (req, res) => {
   return fetch();
 });
 
-// app.post("/userchoise/:userchoise", (req, res) => {
-//   return new Promise((resolve, reject) => {
-//     let allResults = [];
-//     let body = "";
-//     let userChoise = req.params.userchoise;
-//     https.get(
-//       `https://trefle.io/api/plants?q=${userChoise}&token=${trfleToken}`,
-//       res => {
-//         res.on("data", function(chunk) {
-//           body += chunk;
-//         });
-//         res.on("end", function() {
-//           let parseBodyTwo = JSON.parse(body);
-//           console.log(
-//             "parseBodyTwo from end of userChoise request :",
-//             parseBodyTwo
-//           );
-//           // allResults.push(body);
-//           // console.log("all results: ", allResults);
-//           resolve(parseBodyTwo);
-//         });
-//       }
-//     );
-//   });
-// });
-
-// app.post("/trefle", async (req, res) => {
-//   let common_name = req.body.common_name;
-//   console.log("common_name: ", common_name);
-//   function getTrefle(common_name) {
-//     return new Promise((resolve, reject) => {
-//       let body = "";
-//       https.get(
-//         `https://trefle.io/api/plants?q=${common_name}&complete_data=true&token=${trfleToken}`,
-//         res => {
-//           res.on("data", function(chunk) {
-//             body += chunk;
-//           });
-//           res.on("end", function() {
-//             let parsedBody = JSON.parse(body);
-//             // console.log("parsedBody from get trefle: ", parsedBody);
-//             body += parsedBody;
-//             resolve(body);
-//           });
-//         }
-//       );
-//     });
-//   }
-//   var trefleResults = await getTrefle(common_name);
-// console.log("trefleResults: ", trefleResults);
-
-// const trefleLinks = trefleResults.map(trefle => trefle.link);
-// console.log("trefleLinks: ", trefleLinks);
-// if (trefleLinks.length > 0) {
-//   const promises = await Promise.all([
-//     getImage(trefleLinks[0].replace("http", "https"))
-//   ]);
-// }
-// console.log("trefleResults: ", trefleResults);
-// console.log("promises: ", promises);
-// function getImage(url) {
-//   return new Promise((resolve, reject) => {
-//     let host = url.slice(8, 17);
-//     let path = url.replace("https://trefle.io", "");
-//     // console.log("host: ", host);
-//     // console.log("path: ", path);
-//     const options = {
-//       hostname: host,
-//       path: path,
-//       headers: {
-//         Authorization: `Bearer ${trfleToken}`
-//       }
-//     };
-//     let body = "";
-//     // let parsedResults = "";
-//     https
-//       .get(options, res => {
-//         res.on("data", function(chunk) {
-//           body += chunk;
-//           // console.log("body: ", body);
-//         });
-//         res.on("end", function() {
-//           let parsedBody = JSON.parse(body);
-//           // console.log("parsedBody from getImage from trefle: ", parsedBody);
-//           allResults.push(parsedBody);
-//           resolve(JSON.parse(body));
-//         });
-//
-//         if (res.statusCode == 200) {
-//         } else {
-//           console.log("status code not 200");
-//           reject(res.statusMessage);
-//         }
-//       })
-//       .on("error", function(err) {
-//         console.log("err: ", err);
-//       });
-//   });
-// }
-// });
-
 app.get("*", function(req, res) {
-  console.log("*************************** GET *");
   if (!req.session.userId) {
     console.log("*************************** REDIRECT TO WELCOME");
     res.redirect("/welcome");
